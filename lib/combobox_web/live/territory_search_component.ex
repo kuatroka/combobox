@@ -8,7 +8,7 @@ defmodule ComboboxWeb.TerritorySearchComponent do
 
   import Ecto.Query
 
-  def update( socket) do  # LiveComponents use update/2, not mount/3
+  def update(_assigns, socket) do  # LiveComponents use update/2, not mount/3
       {:ok,
         socket
         |> assign(:territories, [])
