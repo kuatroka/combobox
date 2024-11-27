@@ -11,6 +11,7 @@ defmodule ComboboxWeb.TerritorySearchComponent do
   def update(assigns, socket) do  # LiveComponents use update/2, not mount/3
     {:ok,
      socket
+     |> assign(assigns)
      |> assign(:territories, [])
      |> assign(:search_term, "")
      |> assign(:show_modal, false)}
