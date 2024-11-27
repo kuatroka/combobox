@@ -46,7 +46,7 @@ defmodule ComboboxWeb.TerritorySearchComponent do
 
         <div id="search-modal" class={
           "fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-50 z-50 overflow-y-auto overflow-x-hidden
-    transition-opacity duration-300" <>
+      transition-opacity duration-300" <>
             if @show_modal, do: "", else: " hidden"
         }>
           <div class="relative top-20 mx-auto p-5 border w-full max-w-2xl shadow-lg rounded-md bg-white">
