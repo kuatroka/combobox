@@ -8,13 +8,13 @@ defmodule ComboboxWeb.TerritorySearchComponent do
 
   import Ecto.Query
 
-  def update(_assigns, socket) do  # LiveComponents use update/2, not mount/3
-      {:ok,
-        socket
-        |> assign(:territories, [])
-        |> assign(:search_term, "")
-        |> assign(:show_modal, false)}
-    end
+  def update(assigns, socket) do  # LiveComponents use update/2, not mount/3
+    {:ok,
+     socket
+     |> assign(:territories, [])
+     |> assign(:search_term, "")
+     |> assign(:show_modal, false)}
+  end
 
 
     def handle_event("toggle-modal", _params, socket) do
