@@ -12,7 +12,7 @@ defmodule ComboboxWeb.TerritorySearchModalComponent do
       <div class="mt-4">
         <input 
           type="text" 
-          phx-target={@myself}
+          phx-target="territory-search-component"
           phx-keyup="search"
           placeholder="Search territories..."
           class="w-full p-2 border rounded-md"

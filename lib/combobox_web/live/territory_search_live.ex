@@ -13,7 +13,7 @@ defmodule ComboboxWeb.TerritorySearchLive do
       <.modal id="territory-search-modal">
         <.live_component
           module={ComboboxWeb.TerritorySearchModalComponent}
-          id="territory-search-modal"
+          id="territory-search-component"
         />
       </.modal>
 
