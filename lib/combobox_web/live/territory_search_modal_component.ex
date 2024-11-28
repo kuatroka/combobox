@@ -44,6 +44,7 @@ defmodule ComboboxWeb.TerritorySearchModalComponent do
       socket
       |> assign(assigns)
       |> assign(results: (if assigns[:search_term], do: Combobox.Territory.search(Combobox.Repo, assigns[:search_term]), else: []))
+    {:noreply, socket}
   end
 
 
