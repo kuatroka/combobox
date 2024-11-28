@@ -3,25 +3,33 @@ defmodule ComboboxWeb.TerritorySearchModalComponent do
 
   def render(assigns) do
     ~H"""
-    <div id={@id} class="modal">
-      <input 
-        type="text" 
-        phx-target={@myself}
-        phx-keyup="search"
-        placeholder="Search territories..."
-        class="w-full p-2 border"
-      />
-      
-      <div class="search-results">
-        <%= for territory <- @results do %>
-          <div 
-            phx-click="select_territory" 
-            phx-value-link={Combobox.Territory.generate_link(territory)}
-            class="cursor-pointer hover:bg-gray-100 p-2"
-          >
-            <%= territory.territory_name %>
-          </div>
-        <% end %>
+    <div>
+      <.header>
+        Search Territories
+        <:subtitle>Search for territories by name</:subtitle>
+      </.header>
+
+      <div class="mt-4">
+        <input 
+          type="text" 
+          phx-target={@myself}
+          phx-keyup="search"
+          placeholder="Search territories..."
+          class="w-full p-2 border rounded-md"
+          autocomplete="off"
+        />
+        
+        <div class="search-results mt-2">
+          <%= for territory <- @results do %>
+            <div 
+              phx-click="select_territory" 
+              phx-value-link={Combobox.Territory.generate_link(territory)}
+              class="cursor-pointer hover:bg-gray-100 p-2 rounded-md"
+            >
+              <%= territory.territory_name %>
+            </div>
+          <% end %>
+        </div>
       </div>
     </div>
     """
