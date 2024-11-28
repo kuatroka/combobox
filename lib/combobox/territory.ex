@@ -19,7 +19,7 @@ defmodule Combobox.Territory do
     |> validate_required([:territory_name, :territory_category])
   end
 
-  def search(repo, search_term) do
+  def search(_repo, search_term) do
     from t in __MODULE__,
       where: fragment("EXISTS (
         SELECT 1 FROM territories_fts 
