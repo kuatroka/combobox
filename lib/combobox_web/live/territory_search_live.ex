@@ -27,6 +27,10 @@ defmodule ComboboxWeb.TerritorySearchLive do
     {:noreply, assign(socket, search_term: search_term, search_results: search_results)}
   end
 
+  def handle_event("stop_propagation", _params, socket) do
+    {:noreply, socket}
+  end
+
   def render(assigns) do
     IO.puts("Rendering with modal_open: #{assigns.modal_open}, search_term: #{assigns.search_term}") # Debugging
     ~H"""
