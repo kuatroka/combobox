@@ -2,24 +2,12 @@ defmodule ComboboxWeb.TerritorySearchLive do
   use ComboboxWeb, :live_view
 
   def mount(_params, _session, socket) do
+    IO.puts("Mounting with modal_open: false, search_term: \"\"") # Debugging
     {:ok, assign(socket, search_term: "", modal_open: false)}
   end
-
-  def handle_event("search", %{"value" => search_term}, socket) do
-    {:noreply, assign(socket, search_term: search_term)}
-  end
-
-  def handle_event("open_modal", _params, socket) do
-    IO.puts("Opening modal")
-    {:noreply, assign(socket, modal_open: true)}
-  end
-
-  def handle_event("close_modal", _params, socket) do
-    IO.puts("Closing modal")
-    {:noreply, assign(socket, modal_open: false)}
-  end
-
+  # ... rest of the code
   def render(assigns) do
+    IO.puts("Rendering with modal_open: #{assigns.modal_open}, search_term: #{assigns.search_term}") # Debugging
     ~H"""
     <div class="mx-auto max-w-2xl">
       <h1 class="text-2xl font-bold mb-4">Search with modal</h1>
@@ -32,11 +20,15 @@ defmodule ComboboxWeb.TerritorySearchLive do
       </button>
 
       <.modal id="territory-search-modal" show={@modal_open}>
-        <.live_component
-          module={ComboboxWeb.TerritorySearchModalComponent}
-          id="territory-search-component"
-          search_term={@search_term} />
-        <button phx-click="close_modal" class="close-button">Close</button>
+        <div class="bg-white p-4 rounded shadow">  <!-- Debugging: Add visible content -->
+          Modal Content Here
+          <.live_component
+            module={ComboboxWeb.TerritorySearchModalComponent}
+            id="territory-search-component"
+            search_term={@search_term}
+            modal_open={@modal_open} />
+          <button phx-click="close_modal" class="close-button">Close</button>
+        </div>
       </.modal>
     </div>
     """
