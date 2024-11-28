@@ -3,7 +3,7 @@ defmodule ComboboxWeb.TerritorySearchLive do
 
   def mount(_params, _session, socket) do
     IO.puts("Mounting with modal_open: false, search_term: \"\"") # Debugging
-    {:ok, assign(socket, search_term: "", modal_open: false)}
+    {:ok, assign(socket, search_term: "", modal_open: false, search_results: [])}
   end
 
   def handle_event("open_modal", _params, socket) do
@@ -18,7 +18,9 @@ defmodule ComboboxWeb.TerritorySearchLive do
 
   def handle_event("update_search_term", %{"value" => search_term}, socket) do
     IO.puts("Updating search term to: #{search_term}")
-    {:noreply, assign(socket, search_term: search_term)}
+    # Here you would typically call a search function to get results
+    search_results = [] # Replace with actual search logic
+    {:noreply, assign(socket, search_term: search_term, search_results: search_results)}
   end
 
   def render(assigns) do
@@ -42,7 +44,8 @@ defmodule ComboboxWeb.TerritorySearchLive do
               module={ComboboxWeb.TerritorySearchModalComponent}
               id="territory-search-component"
               search_term={@search_term}
-              modal_open={@modal_open} />
+              modal_open={@modal_open}
+              search_results={@search_results} />
             <button phx-click="close_modal" class="close-button">Close</button>
           </div>
         </.modal>

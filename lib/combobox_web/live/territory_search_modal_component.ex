@@ -19,7 +19,7 @@ defmodule ComboboxWeb.TerritorySearchModalComponent do
   end
 
   def update(assigns, socket) do
-    IO.puts("Modal Component Updating with search_term: #{assigns.search_term}, modal_open: #{assigns.modal_open}")
+    IO.puts("Modal Component Updating with search_term: #{assigns.search_term}, modal_open: #{assigns.modal_open}, search_results: #{inspect(assigns.search_results)}")
     {:ok, assign(socket, assigns)}
   end
 
@@ -37,6 +37,12 @@ defmodule ComboboxWeb.TerritorySearchModalComponent do
                    phx-change="update_search_term" 
                    value={@search_term} 
                    placeholder="Type your search query here..." />
+            <h3>Search Results:</h3>
+            <ul>
+              <%= for territory <- @search_results do %>
+                <li><%= territory.territory_name %> - <%= territory.territory_category %></li>
+              <% end %>
+            </ul>
           <% else %>
             <p>Modal is closed.</p>
           <% end %>
