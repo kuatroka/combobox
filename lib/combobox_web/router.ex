@@ -17,9 +17,7 @@ defmodule ComboboxWeb.Router do
   scope "/", ComboboxWeb do
     pipe_through :browser
 
-    get "/", PageController, :home
-
-    # get "/", PageController, :home
+    live "/", TerritorySearchLive
   end
 
   # Other scopes may use custom stacks.
