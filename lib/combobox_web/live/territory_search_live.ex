@@ -23,7 +23,6 @@ defmodule ComboboxWeb.TerritorySearchLive do
         Search Territories
       </button>
     </div>
-    </div>
     """
   end
 end
