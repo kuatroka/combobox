@@ -32,7 +32,6 @@ defmodule ComboboxWeb.TerritorySearchModalComponent do
             <% end %>
           </div>
         </div>
-        </div>
       </div>
     </.modal>
     """
