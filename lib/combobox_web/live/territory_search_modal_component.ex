@@ -1,62 +1,44 @@
 defmodule ComboboxWeb.TerritorySearchModalComponent do
   use ComboboxWeb, :live_component
 
-  def render(assigns) do
-    ~H"""
-    <div>
-      <.modal id="territory-search-modal" show={@modal_open}>
-        <div id="territory-search-component">
-          <.header>
-            Search Territories
-            <:subtitle>Search for territories by name</:subtitle>
-          </.header>
+  def mount(socket) do
+    search_term =
+      case Map.fetch(socket.assigns, :search_term) do
+        {:ok, term} -> term
+        :error -> "Search term not available yet"
+      end
 
-          <div class="mt-4">
-            <input
-              type="text"
-              phx-target="territory-search-component"
-              phx-keyup="search"
-              placeholder="Search territories..."
-              class="w-full p-2 border rounded-md"
-              autocomplete="off"
-            />
+    modal_open =
+      case Map.fetch(socket.assigns, :modal_open) do
+        {:ok, open} -> open
+        :error -> false
+      end
 
-            <div class="search-results mt-2">
-              <%= for territory <- @results do %>
-                <div
-                  phx-click="select_territory"
-                  phx-value-link={Combobox.Territory.generate_link(territory)}
-                  class="cursor-pointer hover:bg-gray-100 p-2 rounded-md"
-                >
-                  <%= territory.territory_name %>
-                </div>
-              <% end %>
-            </div>
-          </div>
-        </div>
-      </.modal>
-    </div>
-    """
-  end
-
-  def update(assigns, socket) do
-    results = if assigns[:search_term] && assigns[:search_term] != "" do
-      Combobox.Repo.all(Combobox.Territory.search(Combobox.Repo, assigns[:search_term]))
-    else
-      []
-    end
-
-    socket =
-      socket
-      |> assign(assigns)
-      |> assign(results: results)
-
+    IO.puts("Modal Component Mounting with search_term: #{search_term}, modal_open: #{modal_open}")
     {:ok, socket}
   end
 
-  def handle_event("select_territory", %{"link" => link}, socket) do
-    {:noreply, 
-     socket
-     |> push_navigate(to: "/#{link}")}
+  def update(assigns, socket) do
+    IO.puts("Modal Component Updating with search_term: #{assigns.search_term}, modal_open: #{assigns.modal_open}")
+    {:ok, assign(socket, assigns)}
+  end
+
+  def render(assigns) do
+    ~H"""
+    <div class="territory-modal" id="myModal" phx-update="append">
+      <div class="modal-content">
+        <span class="close" phx-click="close_modal">&times;</span>
+        <p>Search Term: <%= @search_term %></p>
+        <p>Modal Open: <%= inspect(@modal_open) %></p>
+        <div>
+          <%= if @modal_open do %>
+            <p>Modal is open!</p>
+          <% else %>
+            <p>Modal is closed.</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    """
   end
 end
