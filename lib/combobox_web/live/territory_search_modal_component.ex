@@ -25,8 +25,8 @@ defmodule ComboboxWeb.TerritorySearchModalComponent do
 
   def render(assigns) do
     ~H"""
-    <div class="territory-modal" id="myModal" phx-update="append">
-      <div class="modal-content">
+    <div class="territory-modal" id="myModal" phx-click="close_modal" phx-window="click" phx-target={@myself}>
+      <div class="modal-content" phx-click="stop_propagation">
         <span class="close" phx-click="close_modal">&times;</span>
         <p>Search Term: <%= @search_term %></p>
         <p>Modal Open: <%= inspect(@modal_open) %></p>
@@ -50,5 +50,9 @@ defmodule ComboboxWeb.TerritorySearchModalComponent do
       </div>
     </div>
     """
+  end
+
+  def handle_event("stop_propagation", _params, socket) do
+    {:noreply, socket}
   end
 end
