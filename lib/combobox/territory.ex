@@ -21,7 +21,7 @@ defmodule Combobox.Territory do
 
   def search(query, search_term) do
     from t in query,
-      where: fragment("territory_name MATCH ?", ^search_term),
+      where: fragment("territory_name LIKE ?", ^"%#{search_term}%"),
       limit: 5
   end
 
