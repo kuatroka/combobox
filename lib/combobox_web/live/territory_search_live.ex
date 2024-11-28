@@ -13,10 +13,9 @@ defmodule ComboboxWeb.TerritorySearchLive do
       <.modal id="territory-search-modal" show>
         <.live_component
           module={ComboboxWeb.TerritorySearchModalComponent}
-          id="territory-search-component"
-        >
-          <div>
-            <.header>
+          id="territory-search-component" />
+        <div>
+          <.header>
               Search Territories
               <:subtitle>Search for territories by name</:subtitle>
             </.header>

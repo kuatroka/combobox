@@ -4,7 +4,7 @@ defmodule ComboboxWeb.TerritorySearchModalComponent do
   def render(assigns) do
     ~H"""
     <.modal id="territory-search-modal">
-      <div>
+      <div id="territory-search-component">
         <.header>
           Search Territories
           <:subtitle>Search for territories by name</:subtitle>
@@ -31,6 +31,7 @@ defmodule ComboboxWeb.TerritorySearchModalComponent do
               </div>
             <% end %>
           </div>
+        </div>
         </div>
       </div>
     </.modal>
