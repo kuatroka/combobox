@@ -17,7 +17,7 @@ defmodule ComboboxWeb.TerritorySearchLive do
       </.modal>
 
       <button
-        phx-click={JS.show(to: "territory-search-modal")}
+        phx-click={JS.show(to: "#territory-search-modal")}
         class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
       >
         Search Territories
