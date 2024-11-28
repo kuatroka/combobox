@@ -22,7 +22,7 @@ defmodule Combobox.Territory do
   def search(_repo, search_term) do
     from t in __MODULE__,
       join: fts in "territories_fts", on: fts.rowid == t.id,
-      where: fragment("fts MATCH ?", ^search_term),
+      where: fragment("territories_fts MATCH ?", ^search_term),
       limit: 5
   end
 
