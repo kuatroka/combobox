@@ -43,7 +43,7 @@ defmodule ComboboxWeb.TerritorySearchModalComponent do
     {:ok, 
       socket
       |> assign(assigns)
-      |> assign(results: if assigns[:search_term], do: Combobox.Territory.search(Combobox.Repo, assigns[:search_term]), else: [])}
+      |> assign(results: (if assigns[:search_term], do: Combobox.Territory.search(Combobox.Repo, assigns[:search_term]), else: []))
   end
 
   def handle_event("search", %{"value" => _search_term}, socket) do
