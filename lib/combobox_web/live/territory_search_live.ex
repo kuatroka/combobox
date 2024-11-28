@@ -10,7 +10,7 @@ defmodule ComboboxWeb.TerritorySearchLive do
     <div class="mx-auto max-w-2xl">
       <h1 class="text-2xl font-bold mb-4">Search with modal</h1>
 
-      <.modal id="territory-search-modal" show>
+      <.modal id="territory-search-modal">
         <.live_component
           module={ComboboxWeb.TerritorySearchModalComponent}
           id="territory-search-component" />
