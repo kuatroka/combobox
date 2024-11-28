@@ -1,18 +1,21 @@
-<.flash_group flash={@flash} />
+<div>
+  <.flash_group flash={@flash} />
 
-<h1 class="text-2xl font-bold mb-4">Welcome to the Home Page</h1>
-<p class="mb-4">This is the content of the home page.</p>
+  <h1 class="text-2xl font-bold mb-4">Welcome to the Home Page</h1>
+  <p class="mb-4">This is the content of the home page.</p>
 
-<button 
-    phx-click={show_modal("territory-search-modal")}
+  <.modal id="territory-search-modal">
+    <.live_component 
+      module={ComboboxWeb.TerritorySearchModalComponent} 
+      id="territory-search-modal" 
+    />
+  </.modal>
+
+  <button 
+    phx-click={JS.show(to: "#territory-search-modal")}
     class="btn btn-primary"
->
+  >
     Search Territories
-</button>
-
-<.live_component 
-    module={ComboboxWeb.TerritorySearchModalComponent} 
-    id="territory-search-modal" 
-/>
-
+  </button>
+</div>
 
