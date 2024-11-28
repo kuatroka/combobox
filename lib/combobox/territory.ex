@@ -19,8 +19,8 @@ defmodule Combobox.Territory do
     |> validate_required([:territory_name, :territory_category])
   end
 
-  def search(query, search_term) do
-    from t in query,
+  def search(repo, search_term) do
+    from t in __MODULE__,
       where: fragment("EXISTS (
         SELECT 1 FROM territories_fts 
         WHERE territories_fts MATCH ? 
