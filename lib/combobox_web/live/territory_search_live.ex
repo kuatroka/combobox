@@ -5,7 +5,17 @@ defmodule ComboboxWeb.TerritorySearchLive do
     IO.puts("Mounting with modal_open: false, search_term: \"\"") # Debugging
     {:ok, assign(socket, search_term: "", modal_open: false)}
   end
-  # ... rest of the code
+
+  def handle_event("open_modal", _params, socket) do
+    IO.puts("Opening modal")
+    {:noreply, assign(socket, modal_open: true)}
+  end
+
+  def handle_event("close_modal", _params, socket) do
+    IO.puts("Closing modal")
+    {:noreply, assign(socket, modal_open: false)}
+  end
+
   def render(assigns) do
     IO.puts("Rendering with modal_open: #{assigns.modal_open}, search_term: #{assigns.search_term}") # Debugging
     ~H"""
