@@ -10,11 +10,41 @@ defmodule ComboboxWeb.TerritorySearchLive do
     <div class="mx-auto max-w-2xl">
       <h1 class="text-2xl font-bold mb-4">Search with modal</h1>
 
-      <.modal id="territory-search-modal">
+      <.modal id="territory-search-modal" show>
         <.live_component
           module={ComboboxWeb.TerritorySearchModalComponent}
           id="territory-search-component"
-        />
+        >
+          <div>
+            <.header>
+              Search Territories
+              <:subtitle>Search for territories by name</:subtitle>
+            </.header>
+
+            <div class="mt-4">
+              <input
+                type="text"
+                phx-target="territory-search-component"
+                phx-keyup="search"
+                placeholder="Search territories..."
+                class="w-full p-2 border rounded-md"
+                autocomplete="off"
+              />
+
+              <div class="search-results mt-2">
+                <%= for territory <- @results do %>
+                  <div
+                    phx-click="select_territory"
+                    phx-value-link={Combobox.Territory.generate_link(territory)}
+                    class="cursor-pointer hover:bg-gray-100 p-2 rounded-md"
+                  >
+                    <%= territory.territory_name %>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </.live_component>
       </.modal>
 
       <button
