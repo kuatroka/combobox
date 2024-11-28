@@ -18,8 +18,12 @@ defmodule ComboboxWeb.TerritorySearchLive do
 
   def handle_event("update_search_term", %{"value" => search_term}, socket) do
     IO.puts("Updating search term to: #{search_term}")
-    # Here you would typically call a search function to get results
-    search_results = [] # Replace with actual search logic
+
+    # Call the search function to get results
+    search_results = Combobox.Repo.all(Combobox.Territory.search(Combobox.Repo, search_term))
+
+    IO.inspect(search_results, label: "Search Results")
+
     {:noreply, assign(socket, search_term: search_term, search_results: search_results)}
   end
 
