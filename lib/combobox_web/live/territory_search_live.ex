@@ -29,17 +29,19 @@ defmodule ComboboxWeb.TerritorySearchLive do
         Search Territories
       </button>
 
-      <.modal id="territory-search-modal" show={@modal_open}>
-        <div class="bg-white p-4 rounded shadow">  <!-- Debugging: Add visible content -->
-          Modal Content Here
-          <.live_component
-            module={ComboboxWeb.TerritorySearchModalComponent}
-            id="territory-search-component"
-            search_term={@search_term}
-            modal_open={@modal_open} />
-          <button phx-click="close_modal" class="close-button">Close</button>
-        </div>
-      </.modal>
+      <%= if @modal_open do %>
+        <.modal id="territory-search-modal" show={@modal_open}>
+          <div class="bg-white p-4 rounded shadow">
+            Modal Content Here
+            <.live_component
+              module={ComboboxWeb.TerritorySearchModalComponent}
+              id="territory-search-component"
+              search_term={@search_term}
+              modal_open={@modal_open} />
+            <button phx-click="close_modal" class="close-button">Close</button>
+          </div>
+        </.modal>
+      <% end %>
     </div>
     """
   end
