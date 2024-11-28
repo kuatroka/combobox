@@ -10,10 +10,12 @@ defmodule ComboboxWeb.TerritorySearchLive do
   end
 
   def handle_event("open_modal", _params, socket) do
+    IO.puts("Opening modal")
     {:noreply, assign(socket, modal_open: true)}
   end
 
   def handle_event("close_modal", _params, socket) do
+    IO.puts("Closing modal")
     {:noreply, assign(socket, modal_open: false)}
   end
 

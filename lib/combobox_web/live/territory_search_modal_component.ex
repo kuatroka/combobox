@@ -4,7 +4,7 @@ defmodule ComboboxWeb.TerritorySearchModalComponent do
   def render(assigns) do
     ~H"""
     <div>
-      <.modal id="territory-search-modal">
+      <.modal id="territory-search-modal" show={@modal_open}>
         <div id="territory-search-component">
           <.header>
             Search Territories
@@ -40,10 +40,16 @@ defmodule ComboboxWeb.TerritorySearchModalComponent do
   end
 
   def update(assigns, socket) do
+    results = if assigns[:search_term] && assigns[:search_term] != "" do
+      Combobox.Repo.all(Combobox.Territory.search(Combobox.Repo, assigns[:search_term]))
+    else
+      []
+    end
+
     socket =
       socket
       |> assign(assigns)
-      |> assign(results: if(assigns[:search_term] && assigns[:search_term] != "", do: Combobox.Repo.all(Combobox.Territory.search(Combobox.Repo, assigns[:search_term])), else: []))
+      |> assign(results: results)
 
     {:ok, socket}
   end
