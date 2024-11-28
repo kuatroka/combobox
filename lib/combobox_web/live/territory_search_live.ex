@@ -9,6 +9,10 @@ defmodule ComboboxWeb.TerritorySearchLive do
     {:noreply, assign(socket, :search_term, search_term)}
   end
 
+  def handle_event("open_modal", _params, socket) do
+    {:noreply, assign(socket, :search_term, socket.assigns.search_term)}
+  end
+
   def render(assigns) do
     ~H"""
     <div class="mx-auto max-w-2xl">
@@ -22,7 +26,7 @@ defmodule ComboboxWeb.TerritorySearchLive do
       </.modal>
 
       <button
-        phx-click={JS.show(to: "#territory-search-modal")}
+        phx-click="open_modal"
         class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
       >
         Search Territories
