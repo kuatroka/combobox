@@ -52,7 +52,7 @@ defmodule ComboboxWeb.TerritorySearchModalComponent do
       |> Combobox.Territory.search(search_term)
       |> Combobox.Repo.all()
 
-    {:noreply, assign(socket, :results, results)}
+    {:ok, assign(socket, :results, results)}
   end
 
   def handle_event("select_territory", %{"link" => link}, socket) do
