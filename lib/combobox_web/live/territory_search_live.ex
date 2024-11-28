@@ -2,7 +2,11 @@ defmodule ComboboxWeb.TerritorySearchLive do
   use ComboboxWeb, :live_view
 
   def mount(_params, _session, socket) do
-    {:ok, socket}
+    {:ok, assign(socket, :search_term, "")}
+  end
+
+  def handle_event("search", %{"value" => search_term}, socket) do
+    {:noreply, assign(socket, :search_term, search_term)}
   end
 
   def render(assigns) do
@@ -13,7 +17,8 @@ defmodule ComboboxWeb.TerritorySearchLive do
       <.modal id="territory-search-modal">
         <.live_component
           module={ComboboxWeb.TerritorySearchModalComponent}
-          id="territory-search-component" />
+          id="territory-search-component"
+          search_term={@search_term} />
       </.modal>
 
       <button

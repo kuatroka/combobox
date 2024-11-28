@@ -43,14 +43,12 @@ defmodule ComboboxWeb.TerritorySearchModalComponent do
     {:ok, 
       socket
       |> assign(assigns)
-      |> assign(results: [])}
+      |> assign(results: if assigns[:search_term], do: Combobox.Territory.search(Combobox.Repo, assigns[:search_term]), else: [])}
   end
 
-  def handle_event("search", %{"value" => search_term}, socket) do
-    results = 
-      Combobox.Territory
-      |> Combobox.Territory.search(search_term)
-      |> Combobox.Repo.all()
+  def handle_event("search", %{"value" => _search_term}, socket) do
+    #This event is now handled in the update function
+    {:noreply, socket}
 
     {:ok, assign(socket, :results, results)}
   end
