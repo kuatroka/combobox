@@ -21,9 +21,11 @@ defmodule Combobox.Territory do
 
   def search(query, search_term) do
     from t in query,
-      join: fts in fragment("territories_fts"),
-      on: t.id == fragment("rowid"),
-      where: fragment("territories_fts MATCH ?", ^search_term),
+      where: fragment("EXISTS (
+        SELECT 1 FROM territories_fts 
+        WHERE territories_fts MATCH ? 
+        AND territory_name = ?
+      )", ^search_term, t.territory_name),
       limit: 5
   end
 
