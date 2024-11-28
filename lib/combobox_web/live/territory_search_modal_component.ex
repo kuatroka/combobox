@@ -33,6 +33,10 @@ defmodule ComboboxWeb.TerritorySearchModalComponent do
         <div>
           <%= if @modal_open do %>
             <p>Modal is open!</p>
+            <input type="text" 
+                   phx-change="update_search_term" 
+                   value={@search_term} 
+                   placeholder="Type your search query here..." />
           <% else %>
             <p>Modal is closed.</p>
           <% end %>
