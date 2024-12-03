@@ -27,7 +27,7 @@ defmodule ComboboxWeb.TerritorySearchModalComponent do
     ~H"""
     <div class="territory-modal" id="myModal" phx-click="close_modal" phx-window="click" phx-target={@myself}>
       <div class="modal-content" phx-click="stop_propagation">
-        <span class="close" phx-click-away="close_modal">&times;</span>
+        <span class="close" phx-click="close_modal">&times;</span>
         <p>Search Term: <%= @search_term %></p>
         <%!-- <p>Modal Open: <%= inspect(@modal_open) %></p> --%>
         <div>

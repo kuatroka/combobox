@@ -18,6 +18,30 @@ defmodule ComboboxWeb.Router do
     pipe_through :browser
 
     live "/", TerritorySearchLive
+
+    live "/countries", CountryLive.Index, :index
+    live "/countries/new", CountryLive.Index, :new
+    live "/countries/:id/edit", CountryLive.Index, :edit
+
+    live "/countries/:id", CountryLive.Show, :show
+    # live "/countries/:id/show/edit", CountryLive.Show, :edit
+
+    #######
+    live "/cities", CityLive.Index, :index
+    live "/cities/new", CityLive.Index, :new
+    live "/cities/:id/edit", CityLive.Index, :edit
+
+    live "/cities/:id", CityLive.Show, :show
+    # live "/cities/:id/show/edit", CityLive.Show, :edit
+
+    live "/states", StateLive.Index, :index
+    live "/states/new", StateLive.Index, :new
+    live "/states/:id/edit", StateLive.Index, :edit
+
+    live "/states/:id", StateLive.Show, :show
+    # live "/states/:id/show/edit", StateLive.Show, :edit
+
+
   end
 
   # Other scopes may use custom stacks.
