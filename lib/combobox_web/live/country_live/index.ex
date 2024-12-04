@@ -6,12 +6,30 @@ defmodule ComboboxWeb.CountryLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, stream(socket, :countries, Territory.list_countries())}
+    # {:ok, stream(socket, :countries, Territory.list_countries())}
+    {:ok, stream(socket, :countries, [])}
   end
 
-  @impl true
-  def handle_params(params, _url, socket) do
-    {:noreply, apply_action(socket, socket.assigns.live_action, params)}
+  # @impl true
+  # def handle_params(params, _url, socket) do
+  #   {:noreply, apply_action(socket, socket.assigns.live_action, params)}
+  # end
+
+  @impl Phoenix.LiveView
+  def handle_params(params, _, socket) do
+    case Territory.list_countries2(params) do
+      {:ok, {countries, meta}} ->
+        {:noreply,
+        socket
+        |> assign(:meta, meta)
+        |> stream(:countries, countries, reset: true)}
+
+      {:error, _meta} ->
+        # This will reset invalid parameters. Alternatively, you can assign
+        # only the meta and render the errors, or you can ignore the error
+        # case entirely.
+        {:noreply, push_navigate(socket, to: ~p"/countries")}
+    end
   end
 
   defp apply_action(socket, :edit, %{"id" => id}) do

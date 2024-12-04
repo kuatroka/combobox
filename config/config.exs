@@ -7,6 +7,8 @@
 # General application configuration
 import Config
 
+config :flop, repo: Combobox.Repo
+
 config :combobox,
   ecto_repos: [Combobox.Repo],
   generators: [timestamp_type: :utc_datetime]

@@ -59,6 +59,14 @@ defmodule Combobox.Territory do
     Repo.all(Country)
   end
 
+  ### using flop
+  def list_countries2(params) do
+    # Flop.validate_and_run(Country, params, for: Country, default_limit: 10)
+    Flop.validate_and_run(Country, params, for: Country, default_limit: 5)
+  end
+
+
+
   @doc """
   Gets a single country.
 

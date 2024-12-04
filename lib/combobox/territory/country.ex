@@ -2,6 +2,13 @@ defmodule Combobox.Territory.Country do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @derive {
+    Flop.Schema,
+    filterable: [:country_code, :country_name],
+    sortable: [:country_id, :country_code, :country_name],
+    default_limit: 10
+  }
+
   schema "countries" do
     field :country_id, :integer
     field :country_code, :string

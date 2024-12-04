@@ -7,6 +7,21 @@
   </:actions>
 </.header>
 
+<h1>Pets</h1>
+
+<Flop.Phoenix.table items={@streams.countries} meta={@meta} path={~p"/countries"}>
+  <:col :let={{_, country}} label="id" field={:name}><%= country.country_id %></:col>
+  <:col :let={{_, country}} label="Code" field={:age}><%= country.country_code %></:col>
+  <:col :let={{_, country}} label="Name" field={:age}><%= country.country_name %></:col>
+</Flop.Phoenix.table>
+
+<Flop.Phoenix.pagination 
+meta={@meta}
+path={~p"/countries"}
+opts={ComboboxWeb.FlopComponents.pagination_opts()}
+
+  />
+
 <.table
   id="countries"
   rows={@streams.countries}
