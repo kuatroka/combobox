@@ -19,15 +19,14 @@ defmodule ComboboxWeb.CountryLive.Index do
   def handle_params(params, _, socket) do
     case Territory.list_countries2(params) do
       {:ok, {countries, meta}} ->
-        {:noreply,
-        socket
-        |> assign(:meta, meta)
-        |> stream(:countries, countries, reset: true)}
+        socket = socket
+          |> assign(:meta, meta)
+          |> stream(:countries, countries, reset: true)
+
+        # Apply the action after setting up the stream
+        {:noreply, apply_action(socket, socket.assigns.live_action, params)}
 
       {:error, _meta} ->
-        # This will reset invalid parameters. Alternatively, you can assign
-        # only the meta and render the errors, or you can ignore the error
-        # case entirely.
         {:noreply, push_navigate(socket, to: ~p"/countries")}
     end
   end

@@ -9,11 +9,33 @@
 
 <h1>Pets</h1>
 
-<Flop.Phoenix.table items={@streams.countries} meta={@meta} path={~p"/countries"}>
-  <:col :let={{_, country}} label="id" field={:name}><%= country.country_id %></:col>
-  <:col :let={{_, country}} label="Code" field={:age}><%= country.country_code %></:col>
-  <:col :let={{_, country}} label="Name" field={:age}><%= country.country_name %></:col>
+<Flop.Phoenix.table items={@streams.countries} 
+meta={@meta} 
+path={~p"/countries"} 
+row_click={fn {_id, country} -> JS.navigate(~p"/countries/#{country}") end}
+opts={ComboboxWeb.FlopComponents.table_opts()}
+>
+  <:col :let={{_, country}} label="id" field={:country_id}><%= country.country_id %></:col>
+  <:col :let={{_, country}} label="Code" field={:country_code}><%= country.country_code %></:col>
+  <:col :let={{_, country}} label="Name" field={:country_name}><%= country.country_name %></:col>
+    <:action :let={{_id, country}}>
+    <div class="sr-only">
+      <.link navigate={~p"/countries/#{country}"}>Show</.link>
+    </div>
+    <.link patch={~p"/countries/#{country}/edit"} class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 focus:outline-none focus:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400 dark:focus:text-blue-400">Edit</.link>
+  </:action>
+  <:action :let={{id, country}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: country.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    class="font-semibold">
+      Delete
+    </.link>
+  </:action>
+
 </Flop.Phoenix.table>
+
+
 
 <Flop.Phoenix.pagination 
 meta={@meta}
@@ -21,13 +43,14 @@ path={~p"/countries"}
 opts={ComboboxWeb.FlopComponents.pagination_opts()}
 
   />
+<%!-- opts={[page_links: :hide]} --%>
 
 <.table
   id="countries"
   rows={@streams.countries}
   row_click={fn {_id, country} -> JS.navigate(~p"/countries/#{country}") end}
 >
-  <:col :let={{_id, country}} label="Country"><%= country.country_id %></:col>
+  <:col :let={{_id, country}} label="Country id"><%= country.country_id %></:col>
   <:col :let={{_id, country}} label="Country code"><%= country.country_code %></:col>
   <:col :let={{_id, country}} label="Country name"><%= country.country_name %></:col>
   <:col :let={{_id, country}} label="Iso3"><%= country.iso3 %></:col>
