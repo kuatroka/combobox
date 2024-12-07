@@ -1,5 +1,6 @@
+
 <.header>
-  Listing Countries
+  Listing Countries - FlopComponents - Flowbite
   <:actions>
     <.link patch={~p"/countries/new"}>
       <.button>New Country</.button>
@@ -7,8 +8,10 @@
   </:actions>
 </.header>
 
-<h1>Pets</h1>
+<%!-- <.icon name="hero-arrow-down-circle" class="w-6 h-6" />  # need to compile for it to work --%>
 
+
+<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
 <Flop.Phoenix.table items={@streams.countries} 
 meta={@meta} 
 path={~p"/countries"} 
@@ -18,32 +21,59 @@ opts={ComboboxWeb.FlopComponents.table_opts()}
   <:col :let={{_, country}} label="id" field={:country_id}><%= country.country_id %></:col>
   <:col :let={{_, country}} label="Code" field={:country_code}><%= country.country_code %></:col>
   <:col :let={{_, country}} label="Name" field={:country_name}><%= country.country_name %></:col>
-    <:action :let={{_id, country}}>
+    <:action :let={{_id, country}} label="Actions">
     <div class="sr-only">
       <.link navigate={~p"/countries/#{country}"}>Show</.link>
     </div>
     <.link patch={~p"/countries/#{country}/edit"} class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 focus:outline-none focus:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400 dark:focus:text-blue-400">Edit</.link>
   </:action>
-  <:action :let={{id, country}}>
+  <:action :let={{id, country}} >
     <.link
       phx-click={JS.push("delete", value: %{id: country.id}) |> hide("##{id}")}
       data-confirm="Are you sure?"
-    class="font-semibold">
+    class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-red-600 hover:text-red-800 focus:outline-none focus:text-red-800 disabled:opacity-50 disabled:pointer-events-none dark:text-red-500 dark:hover:text-red-400 dark:focus:text-red-400">
       Delete
     </.link>
   </:action>
 
 </Flop.Phoenix.table>
+<.pagination meta={@meta} path={~p"/countries"}  />
+</div>
 
 
-
-<Flop.Phoenix.pagination 
-meta={@meta}
-path={~p"/countries"}
-opts={ComboboxWeb.FlopComponents.pagination_opts()}
-
+<Flop.Phoenix.pagination
+    meta={@meta}
+    path={~p"/countries"}
+    opts={[
+                page_links: :hide,
+                wrapper_attrs: [
+                  class:
+                    "px-6 py-4 flex justify-between items-center border-t border-gray-200 dark:border-gray-700"
+                ],
+                disabled_class:
+                  "border-gray-100 font-semibold text-gray-400 hover:text-gray-400 hover:bg-transparent hover:border-gray-200",
+                next_link_attrs: [
+                  class:
+                    "py-[.688rem] px-4 inline-flex justify-center items-center gap-2 rounded-md border-2 border-gray-200 font-semibold text-blue-500 hover:text-white hover:bg-blue-500 hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:border-gray-700 dark:hover:border-blue-500"
+                ],
+                previous_link_attrs: [
+                  class:
+                    "py-[.688rem] px-4 inline-flex justify-center items-center gap-2 rounded-md border-2 border-gray-200 font-semibold text-blue-500 hover:text-white hover:bg-blue-500 hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:border-gray-700 dark:hover:border-blue-500"
+                ]
+              ]}
   />
+
 <%!-- opts={[page_links: :hide]} --%>
+
+<.header>
+  Listing Countries - CoreComponents
+  <:actions>
+    <.link patch={~p"/countries/new"}>
+      <.button>New Country</.button>
+    </.link>
+  </:actions>
+</.header>
+
 
 <.table
   id="countries"
