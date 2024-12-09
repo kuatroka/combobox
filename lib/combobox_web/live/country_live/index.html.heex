@@ -41,31 +41,7 @@ opts={ComboboxWeb.FlopComponents.table_opts()}
 </div>
 
 
-<Flop.Phoenix.pagination
-    meta={@meta}
-    path={~p"/countries"}
-    opts={[
-                page_links: :hide,
-                wrapper_attrs: [
-                  class:
-                    "px-6 py-4 flex justify-between items-center border-t border-gray-200 dark:border-gray-700"
-                ],
-                disabled_class:
-                  "border-gray-100 font-semibold text-gray-400 hover:text-gray-400 hover:bg-transparent hover:border-gray-200",
-                next_link_attrs: [
-                  class:
-                    "py-[.688rem] px-4 inline-flex justify-center items-center gap-2 rounded-md border-2 border-gray-200 font-semibold text-blue-500 hover:text-white hover:bg-blue-500 hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:border-gray-700 dark:hover:border-blue-500"
-                ],
-                previous_link_attrs: [
-                  class:
-                    "py-[.688rem] px-4 inline-flex justify-center items-center gap-2 rounded-md border-2 border-gray-200 font-semibold text-blue-500 hover:text-white hover:bg-blue-500 hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:border-gray-700 dark:hover:border-blue-500"
-                ]
-              ]}
-  />
-
-<%!-- opts={[page_links: :hide]} --%>
-
-<.header>
+<.header class="my-8">
   Listing Countries - CoreComponents
   <:actions>
     <.link patch={~p"/countries/new"}>
@@ -80,10 +56,10 @@ opts={ComboboxWeb.FlopComponents.table_opts()}
   rows={@streams.countries}
   row_click={fn {_id, country} -> JS.navigate(~p"/countries/#{country}") end}
 >
-  <:col :let={{_id, country}} label="Country id"><%= country.country_id %></:col>
-  <:col :let={{_id, country}} label="Country code"><%= country.country_code %></:col>
-  <:col :let={{_id, country}} label="Country name"><%= country.country_name %></:col>
-  <:col :let={{_id, country}} label="Iso3"><%= country.iso3 %></:col>
+  <:col :let={{_id, country}} label="Country id">{country.country_id}</:col>
+  <:col :let={{_id, country}} label="Country code">{country.country_code}</:col>
+  <:col :let={{_id, country}} label="Country name">{country.country_name}</:col>
+  <:col :let={{_id, country}} label="Iso3">{country.iso3}</:col>
   <:action :let={{_id, country}}>
     <div class="sr-only">
       <.link navigate={~p"/countries/#{country}"}>Show</.link>

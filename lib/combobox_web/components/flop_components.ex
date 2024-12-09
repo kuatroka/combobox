@@ -48,9 +48,11 @@ defmodule ComboboxWeb.FlopComponents do
       page_links: :hide,
       # The attributes for the <nav> element that wraps the pagination links
       wrapper_attrs: [class: "inline-flex -space-x-px rtl:space-x-reverse text-sm h-8"],
-      previous_link_attrs: [class: "flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"],
+      previous_link_attrs: [class: "flex items-center justify-center px-3 h-8 ms-0 leading-tight font-semibold text-gray-900 dark:text-white bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"],
       previous_link_content:  Phoenix.HTML.raw("Previous"),
-      next_link_attrs: [class: "flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"],
+      # disabled_class: "cursor-not-allowed no-underline hover:no-underline pointer-events-none disabled",
+      disabled_class: "cursor-not-allowed no-underline hover:no-underline text-opacity-50",
+      next_link_attrs: [class: "flex items-center justify-center px-3 h-8 leading-tight font-semibold text-gray-900 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"],
       next_link_content: Phoenix.HTML.raw("Next")
     ]
   end
@@ -101,7 +103,7 @@ defmodule ComboboxWeb.FlopComponents do
       )
     ~H"""
     <nav :if={@meta.total_pages > 1} class="flex items-center flex-column flex-wrap md:flex-row justify-between py-4 px-2" aria-label="Table navigation">
-    <span class="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">Showing <span class="font-semibold text-gray-900 dark:text-white"><%= @from%>-<%=@to%></span> of <span class="font-semibold text-gray-900 dark:text-white"><%=@meta.total_count%></span></span>
+    <span class="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">Showing <span class="font-semibold text-gray-900 dark:text-white">{@from}-{@to}</span> of <span class="font-semibold text-gray-900 dark:text-white">{@meta.total_count}</span></span>
       <Flop.Phoenix.pagination
         opts={pagination_opts()}
         meta={@meta}
