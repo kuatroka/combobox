@@ -57,38 +57,8 @@ defmodule ComboboxWeb.FlopComponents do
     ]
   end
 
-  defp previous_link_content do
-    assigns = %{}
-
-    ~H"""
-    <button class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</button>
-    """
-  end
-
-  defp next_link_content do
-    assigns = %{}
-
-    ~H"""
-    <button class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</button>
-    """
-  end
 
 
-  defp next_icon do
-    assigns = %{}
-
-    ~H"""
-    <i class="fas fa-chevron-right"/>
-    """
-  end
-
-  defp previous_icon do
-    assigns = %{}
-
-    ~H"""
-    <i class="fas fa-chevron-left"/>
-    """
-  end
 
   attr :meta, Flop.Meta, required: true
   attr :path, :any, default: nil

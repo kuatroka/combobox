@@ -21,10 +21,10 @@ defmodule ComboboxWeb.Router do
 
     live "/countries", CountryLive.Index, :index
     live "/countries/new", CountryLive.Index, :new
-    live "/countries/:id/edit", CountryLive.Index, :edit
+    live "/countries/:country_id/edit", CountryLive.Index, :edit
 
-    live "/countries/:id", CountryLive.Show, :show
-    # live "/countries/:id/show/edit", CountryLive.Show, :edit
+    live "/countries/:country_id", CountryLive.Show, :show
+    live "/countries/:country_id/show/edit", CountryLive.Show, :edit
 
     #######
     live "/cities", CityLive.Index, :index

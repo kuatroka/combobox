@@ -1,7 +1,7 @@
 # lib/combobox/territory.ex
 defmodule Combobox.Territory do
   use Ecto.Schema
-  import Ecto.Changeset
+
   import Ecto.Query
 
   alias Combobox.Repo
@@ -15,34 +15,6 @@ defmodule Combobox.Territory do
     timestamps(type: :utc_datetime)
   end
 
-  @doc false
-  def changeset(territories, attrs) do
-    territories
-    |> cast(attrs, [:territory_id, :territory, :territory_name, :territory_category])
-    |> validate_required([:territory_name, :territory_category])
-  end
-
-  def search(_repo, search_term) do
-    from t in __MODULE__,
-      join: fts in "territories_fts", on: fts.rowid == t.id,
-      where: fragment("territories_fts MATCH ?", ^search_term),
-      limit: 5
-  end
-
-  def generate_link(%__MODULE__{} = territory) do
-    "#{territory.territory_category}/#{territory.territory_id}"
-  end
-
-  def search_territories(search_term) when is_binary(search_term) do
-    search_term = search_term <> "*"
-    try do
-      Combobox.Repo.all(search(Combobox.Repo, search_term))
-    rescue
-      Ecto.Error ->
-        []
-    end
-  end
-  def search_territories(_), do: []
 
   alias Combobox.Territory.Country
 
@@ -81,7 +53,9 @@ defmodule Combobox.Territory do
       ** (Ecto.NoResultsError)
 
   """
-  def get_country!(id), do: Repo.get!(Country, id)
+  def get_country!(country_id) do
+    Repo.get_by!(Country, country_id: country_id)
+  end
 
   @doc """
   Creates a country.
@@ -147,6 +121,18 @@ defmodule Combobox.Territory do
   def change_country(%Country{} = country, attrs \\ %{}) do
     Country.changeset(country, attrs)
   end
+
+  def search_countries(query) when is_binary(query) and query != "" do
+    query = "%#{query}%"
+    from(c in Country,
+      where: like(c.country_name, ^query) or like(c.country_code, ^query),
+      order_by: c.country_name,
+      limit: 5
+    )
+    |> Repo.all()
+  end
+
+  def search_countries(_), do: []
 
   alias Combobox.Territory.City
 

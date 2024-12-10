@@ -1,3 +1,25 @@
+<%# ## Search modal %>
+<div class="block max-w-xs flex-auto">
+  <button
+    type="button"
+    phx-click={show_search_modal()}
+    class="w-full flex items-center text-sm font-medium text-gray-900 rounded-lg px-4 lg:px-5 py-2 lg:py-2.5 ring-1 ring-gray-200 hover:bg-gray-50 focus:outline-none focus:ring-4 focus:ring-gray-100 bg-white gap-2"
+  >
+    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+    </svg>
+    <span>Search Countries...</span>
+  </button>
+</div>
+
+<%# ## Search modal %>
+<.search_modal 
+  search_results={@search_results} 
+  close_modal={close_search_modal()} 
+  selected_index={@selected_index}
+/>
+
+<%# ## Search modal %>
 
 <.header>
   Listing Countries - FlopComponents - Flowbite
@@ -10,36 +32,34 @@
 
 <%!-- <.icon name="hero-arrow-down-circle" class="w-6 h-6" />  # need to compile for it to work --%>
 
-
 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-<Flop.Phoenix.table items={@streams.countries} 
-meta={@meta} 
-path={~p"/countries"} 
-row_click={fn {_id, country} -> JS.navigate(~p"/countries/#{country}") end}
-opts={ComboboxWeb.FlopComponents.table_opts()}
->
-  <:col :let={{_, country}} label="id" field={:country_id}><%= country.country_id %></:col>
-  <:col :let={{_, country}} label="Code" field={:country_code}><%= country.country_code %></:col>
-  <:col :let={{_, country}} label="Name" field={:country_name}><%= country.country_name %></:col>
+  <Flop.Phoenix.table items={@streams.countries} 
+  meta={@meta} 
+  path={~p"/countries"} 
+  row_click={fn {_id, country} -> JS.navigate(~p"/countries/#{country.country_id}") end}
+  opts={ComboboxWeb.FlopComponents.table_opts()}
+  >
+    <:col :let={{_, country}} label="id" field={:country_id}><%= country.country_id %></:col>
+    <:col :let={{_, country}} label="Code" field={:country_code}><%= country.country_code %></:col>
+    <:col :let={{_, country}} label="Name" field={:country_name}><%= country.country_name %></:col>
     <:action :let={{_id, country}} label="Actions">
-    <div class="sr-only">
-      <.link navigate={~p"/countries/#{country}"}>Show</.link>
-    </div>
-    <.link patch={~p"/countries/#{country}/edit"} class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 focus:outline-none focus:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400 dark:focus:text-blue-400">Edit</.link>
-  </:action>
-  <:action :let={{id, country}} >
-    <.link
-      phx-click={JS.push("delete", value: %{id: country.id}) |> hide("##{id}")}
-      data-confirm="Are you sure?"
-    class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-red-600 hover:text-red-800 focus:outline-none focus:text-red-800 disabled:opacity-50 disabled:pointer-events-none dark:text-red-500 dark:hover:text-red-400 dark:focus:text-red-400">
-      Delete
-    </.link>
-  </:action>
+      <div class="sr-only">
+        <.link navigate={~p"/countries/#{country.country_id}"}>Show</.link>
+      </div>
+      <.link patch={~p"/countries/#{country.country_id}/edit"} class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 focus:outline-none focus:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400 dark:focus:text-blue-400">Edit</.link>
+    </:action>
+    <:action :let={{stream_id, country}} >
+      <.link
+        phx-click={JS.push("delete", value: %{country_id: country.country_id}) |> hide("##{stream_id}")}
+        data-confirm="Are you sure?"
+      class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-red-600 hover:text-red-800 focus:outline-none focus:text-red-800 disabled:opacity-50 disabled:pointer-events-none dark:text-red-500 dark:hover:text-red-400 dark:focus:text-red-400">
+        Delete
+      </.link>
+    </:action>
 
-</Flop.Phoenix.table>
-<.pagination meta={@meta} path={~p"/countries"}  />
+  </Flop.Phoenix.table>
+  <.pagination meta={@meta} path={~p"/countries"}  />
 </div>
-
 
 <.header class="my-8">
   Listing Countries - CoreComponents
@@ -50,11 +70,10 @@ opts={ComboboxWeb.FlopComponents.table_opts()}
   </:actions>
 </.header>
 
-
 <.table
   id="countries"
   rows={@streams.countries}
-  row_click={fn {_id, country} -> JS.navigate(~p"/countries/#{country}") end}
+  row_click={fn {_id, country} -> JS.navigate(~p"/countries/#{country.country_id}") end}
 >
   <:col :let={{_id, country}} label="Country id">{country.country_id}</:col>
   <:col :let={{_id, country}} label="Country code">{country.country_code}</:col>
@@ -62,13 +81,13 @@ opts={ComboboxWeb.FlopComponents.table_opts()}
   <:col :let={{_id, country}} label="Iso3">{country.iso3}</:col>
   <:action :let={{_id, country}}>
     <div class="sr-only">
-      <.link navigate={~p"/countries/#{country}"}>Show</.link>
+      <.link navigate={~p"/countries/#{country.country_id}"}>Show</.link>
     </div>
-    <.link patch={~p"/countries/#{country}/edit"}>Edit</.link>
+    <.link patch={~p"/countries/#{country.country_id}/edit"}>Edit</.link>
   </:action>
-  <:action :let={{id, country}}>
+  <:action :let={{stream_id, country}}>
     <.link
-      phx-click={JS.push("delete", value: %{id: country.id}) |> hide("##{id}")}
+      phx-click={JS.push("delete", value: %{country_id: country.country_id}) |> hide("##{stream_id}")}
       data-confirm="Are you sure?"
     >
       Delete
