@@ -10,7 +10,7 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 alias Combobox.Repo
-alias Combobox.SearchTerritory
+alias Combobox.Territory.SearchTerritory
 
 csv_path = "data/combined.csv"
 
