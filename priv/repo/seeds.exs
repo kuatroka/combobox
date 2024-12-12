@@ -10,44 +10,44 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 alias Combobox.Repo
-alias Combobox.Territory
-alias Combobox.Territory.Country
+alias Combobox.SearchTerritory
 
-# csv_path = "data/combined.csv" # Replace with the actual path to your combined.csv file
+csv_path = "data/combined.csv"
 
-# # Delete all records from the 'territories' table
-# Repo.delete_all(Territory)
-# Ecto.Adapters.SQL.query!(Combobox.Repo, "DELETE FROM sqlite_sequence WHERE name='territories'")
+# Delete all records from the 'search_territories' table
+Repo.delete_all(SearchTerritory)
+Ecto.Adapters.SQL.query!(Combobox.Repo, "DELETE FROM sqlite_sequence WHERE name='search_territories'")
 
-# case File.read(csv_path) do
-#   {:ok, file} ->
-#     file
-#     |> String.split("\n", trim: true)
-#     |> Enum.drop(1) # Skip the header row
-#     |> Enum.each(fn row ->
-#       case String.split(row, ~r/,(?=(?:[^"]*"[^"]*")*[^"]*$)/, trim: true) do
-#         [territory_id, territory, territory_name, territory_category] ->
-#           territory_data = %{
-#             territory_id: String.to_integer(territory_id),
-#             territory: territory,
-#             territory_name: territory_name,
-#             territory_category: territory_category
-#           }
+case File.read(csv_path) do
+  {:ok, file} ->
+    file
+    |> String.split("\n", trim: true)
+    |> Enum.drop(1) # Skip the header row
+    |> Enum.each(fn row ->
+      case String.split(row, ~r/,(?=(?:[^"]*"[^"]*")*[^"]*$)/, trim: true) do
+        [_, code, name, category] ->
+          territory_data = %{
+            code: code,
+            name: name,
+            category: category
+          }
 
-#           case Territory.changeset(%Territory{}, territory_data)
-#           |> Repo.insert() do
-#             {:ok, _} -> IO.puts("Territory inserted successfully: #{territory_name}")
-#             {:error, changeset} ->
-#               IO.puts("Error inserting territory: #{inspect(changeset.errors)}")
-#           end
-#         _ ->
-#           IO.puts("Skipping malformed row: #{row}")
-#       end
-#     end)
-#     IO.puts("Data from combined.csv loaded into the territories table.")
-#   {:error, reason} ->
-#     IO.puts("Error reading combined.csv: #{inspect(reason)}")
-# end
+          case SearchTerritory.changeset(%SearchTerritory{}, territory_data)
+          |> Repo.insert() do
+            {:ok, _} -> IO.puts("Search territory inserted successfully: #{name}")
+            {:error, changeset} ->
+              IO.puts("Error inserting search territory: #{inspect(changeset.errors)}")
+          end
+
+        _ ->
+          IO.puts("Skipping malformed row: #{row}")
+      end
+    end)
+
+    IO.puts("Data from combined.csv loaded into the search_territories table.")
+  {:error, reason} ->
+    IO.puts("Error reading combined.csv: #{inspect(reason)}")
+end
 
 
 #################
