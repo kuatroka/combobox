@@ -32,11 +32,9 @@ case File.read(csv_path) do
             category: category
           }
 
-          case SearchTerritory.changeset(%SearchTerritory{}, territory_data)
-          |> Repo.insert() do
+          case SearchTerritory.changeset(%SearchTerritory{}, territory_data) |> Repo.insert() do
             {:ok, _} -> IO.puts("Search territory inserted successfully: #{name}")
-            {:error, changeset} ->
-              IO.puts("Error inserting search territory: #{inspect(changeset.errors)}")
+            {:error, changeset} -> IO.puts("Error inserting search territory: #{inspect(changeset.errors)}")
           end
 
         _ ->
