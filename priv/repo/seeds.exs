@@ -10,51 +10,51 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 alias Combobox.Repo
-# alias Combobox.Territory.TerritoryList
+alias Combobox.Territory.TerritoryList
 
-# csv_path = "data/combined.csv"
+csv_path = "data/combined.csv"
 
-# # For FTS tables, we use a direct DELETE statement
-# Ecto.Adapters.SQL.query!(Repo, "DELETE FROM territories_list")
+# For FTS tables, we use a direct DELETE statement
+Ecto.Adapters.SQL.query!(Repo, "DELETE FROM territories_list")
 
-# # Get current timestamp in ISO8601 format
-# current_time = DateTime.utc_now() |> DateTime.to_iso8601()
+# Get current timestamp in ISO8601 format
+current_time = DateTime.utc_now() |> DateTime.to_iso8601()
 
-# defmodule CSVParser do
-#   def parse_line(line) do
-#     line
-#     |> String.split(~r/,(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)/)
-#     |> Enum.map(fn field ->
-#       field
-#       |> String.trim()
-#       |> String.replace(~r/^"|"$/, "") # Remove surrounding quotes
-#     end)
-#   end
-# end
+defmodule CSVParser do
+  def parse_line(line) do
+    line
+    |> String.split(~r/,(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)/)
+    |> Enum.map(fn field ->
+      field
+      |> String.trim()
+      |> String.replace(~r/^"|"$/, "") # Remove surrounding quotes
+    end)
+  end
+end
 
-# case File.read(csv_path) do
-#   {:ok, file} ->
-#     file
-#     |> String.split("\n")
-#     |> Enum.drop(1)  # Skip header row
-#     |> Enum.filter(&(String.length(&1) > 0))  # Skip empty lines
-#     |> Enum.each(fn line ->
-#       case CSVParser.parse_line(line) do
-#         [id, territory, territory_name, territory_category] ->  # Match the CSV structure
-#           # For FTS tables, we use direct INSERT
-#           Ecto.Adapters.SQL.query!(
-#             Repo,
-#             "INSERT INTO territories_list (code, name, category, updated_at, inserted_at) VALUES (?, ?, ?, ?, ?)",
-#             [territory, territory_name, territory_category, current_time, current_time]
-#           )
-#         other ->
-#           IO.puts("Skipping malformed row (#{length(other)} fields): #{line}")
-#       end
-#     end)
+case File.read(csv_path) do
+  {:ok, file} ->
+    file
+    |> String.split("\n")
+    |> Enum.drop(1)  # Skip header row
+    |> Enum.filter(&(String.length(&1) > 0))  # Skip empty lines
+    |> Enum.each(fn line ->
+      case CSVParser.parse_line(line) do
+        [id, territory, territory_name, territory_category] ->  # Match the CSV structure
+          # For FTS tables, we use direct INSERT
+          Ecto.Adapters.SQL.query!(
+            Repo,
+            "INSERT INTO territories_list (code, name, category, updated_at, inserted_at) VALUES (?, ?, ?, ?, ?)",
+            [territory, territory_name, territory_category, current_time, current_time]
+          )
+        other ->
+          IO.puts("Skipping malformed row (#{length(other)} fields): #{line}")
+      end
+    end)
 
-#   {:error, reason} ->
-#     IO.puts("Error reading CSV file: #{reason}")
-# end
+  {:error, reason} ->
+    IO.puts("Error reading CSV file: #{reason}")
+end
 
 
 #################
