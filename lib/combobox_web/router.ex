@@ -17,7 +17,7 @@ defmodule ComboboxWeb.Router do
   scope "/", ComboboxWeb do
     pipe_through :browser
 
-    live "/", TerritorySearchLive
+    get "/", PageController, :home
 
     live "/countries", CountryLive.Index, :index
     live "/countries/new", CountryLive.Index, :new
@@ -40,6 +40,13 @@ defmodule ComboboxWeb.Router do
 
     live "/states/:id", StateLive.Show, :show
     # live "/states/:id/show/edit", StateLive.Show, :edit
+
+    live "/territories_list", TerritoryListLive.Index, :index
+    live "/territories_list/new", TerritoryListLive.Index, :new
+    live "/territories_list/:id/edit", TerritoryListLive.Index, :edit
+
+    live "/territories_list/:id", TerritoryListLive.Show, :show
+    live "/territories_list/:id/show/edit", TerritoryListLive.Show, :edit
 
 
   end
