@@ -10,13 +10,13 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 alias Combobox.Repo
-alias Combobox.Territory.SearchTerritory
+alias Combobox.Territory.TerritoryList
 
 csv_path = "data/combined.csv"
 
-# Delete all records from the 'search_territories' table
-Repo.delete_all(SearchTerritory)
-Ecto.Adapters.SQL.query!(Combobox.Repo, "DELETE FROM sqlite_sequence WHERE name='search_territories'")
+# Delete all records from the 'territories_list' table
+Repo.delete_all(TerritoryList)
+Ecto.Adapters.SQL.query!(Combobox.Repo, "DELETE FROM sqlite_sequence WHERE name='territories_list'")
 
 case File.read(csv_path) do
   {:ok, file} ->
@@ -32,7 +32,7 @@ case File.read(csv_path) do
             category: category
           }
 
-          case SearchTerritory.changeset(%SearchTerritory{}, territory_data) |> Repo.insert() do
+          case TerritoryList.changeset(%TerritoryList{}, territory_data) |> Repo.insert() do
             {:ok, _} -> IO.puts("Search territory inserted successfully: #{name}")
             {:error, changeset} -> IO.puts("Error inserting search territory: #{inspect(changeset.errors)}")
           end
@@ -130,46 +130,46 @@ end
 
 #############
 
-alias Combobox.Territory.State
+# alias Combobox.Territory.State
 
-csv_path_states = "data/states.csv" # Replace with the actual path to your states.csv file
+# csv_path_states = "data/states.csv" # Replace with the actual path to your states.csv file
 
-# Delete all records from the 'states' table
-Repo.delete_all(State)
-Ecto.Adapters.SQL.query!(Combobox.Repo, "DELETE FROM sqlite_sequence WHERE name='states'")
+# # Delete all records from the 'states' table
+# Repo.delete_all(State)
+# Ecto.Adapters.SQL.query!(Combobox.Repo, "DELETE FROM sqlite_sequence WHERE name='states'")
 
-case File.read(csv_path_states) do
-  {:ok, file} ->
-    file
-    |> String.split("\n", trim: true)
-    |> Enum.drop(1) # Skip the header row
-    |> Enum.each(fn row ->
-      case String.split(row, ~r/,(?=(?:[^"]*"[^"]*")*[^"]*$)/, trim: true) do
-        [state_id, state_name, country_code, code] -> # Correct order
-          # Check if state_id is a valid integer
-          case Integer.parse(state_id) do
-            {parsed_state_id, ""} ->
-              state_data = %{
-                code: code,
-                state_id: parsed_state_id,
-                state_name: String.replace(state_name, ~r/^\"|\"$/, ""),
-                country_code: country_code
-              }
+# case File.read(csv_path_states) do
+#   {:ok, file} ->
+#     file
+#     |> String.split("\n", trim: true)
+#     |> Enum.drop(1) # Skip the header row
+#     |> Enum.each(fn row ->
+#       case String.split(row, ~r/,(?=(?:[^"]*"[^"]*")*[^"]*$)/, trim: true) do
+#         [state_id, state_name, country_code, code] -> # Correct order
+#           # Check if state_id is a valid integer
+#           case Integer.parse(state_id) do
+#             {parsed_state_id, ""} ->
+#               state_data = %{
+#                 code: code,
+#                 state_id: parsed_state_id,
+#                 state_name: String.replace(state_name, ~r/^\"|\"$/, ""),
+#                 country_code: country_code
+#               }
 
-              case State.changeset(%State{}, state_data)
-              |> Repo.insert() do
-                {:ok, _} -> IO.puts("State inserted successfully: #{state_name}")
-                {:error, changeset} ->
-                  IO.puts("Error inserting state: #{inspect(changeset.errors)}")
-              end
-            _ ->
-              IO.puts("Skipping row with invalid state_id: #{row}")
-          end
-        _ ->
-          IO.puts("Skipping malformed row: #{row}")
-      end
-    end)
-    IO.puts("Data from states.csv loaded into the states table.")
-  {:error, reason} ->
-    IO.puts("Error reading states.csv: #{inspect(reason)}")
-end
+#               case State.changeset(%State{}, state_data)
+#               |> Repo.insert() do
+#                 {:ok, _} -> IO.puts("State inserted successfully: #{state_name}")
+#                 {:error, changeset} ->
+#                   IO.puts("Error inserting state: #{inspect(changeset.errors)}")
+#               end
+#             _ ->
+#               IO.puts("Skipping row with invalid state_id: #{row}")
+#           end
+#         _ ->
+#           IO.puts("Skipping malformed row: #{row}")
+#       end
+#     end)
+#     IO.puts("Data from states.csv loaded into the states table.")
+#   {:error, reason} ->
+#     IO.puts("Error reading states.csv: #{inspect(reason)}")
+# end
