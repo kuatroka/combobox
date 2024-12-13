@@ -41,12 +41,11 @@ defmodule ComboboxWeb.Router do
     live "/states/:id", StateLive.Show, :show
     # live "/states/:id/show/edit", StateLive.Show, :edit
 
-    live "/territories_list", TerritoryListLive.Index, :index
-    live "/territories_list/new", TerritoryListLive.Index, :new
-    live "/territories_list/:id/edit", TerritoryListLive.Index, :edit
-
-    live "/territories_list/:id", TerritoryListLive.Show, :show
-    live "/territories_list/:id/show/edit", TerritoryListLive.Show, :edit
+    live "/:category/:code", TerritoryListLive.Show, :show
+    live "/:category/:code/edit", TerritoryListLive.Index, :edit
+    live "/:category/:code/show/edit", TerritoryListLive.Show, :edit
+    live "/new", TerritoryListLive.Index, :new
+    live "/", TerritoryListLive.Index, :index
 
 
   end

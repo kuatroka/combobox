@@ -2,7 +2,7 @@
   Territory list <%= @territory_list.id %>
   <:subtitle>This is a territory_list record from your database.</:subtitle>
   <:actions>
-    <.link patch={~p"/territories_list/#{@territory_list}/show/edit"} phx-click={JS.push_focus()}>
+    <.link patch={~p"/#{@territory_list.category}/#{@territory_list.code}/show/edit"} phx-click={JS.push_focus()}>
       <.button>Edit territory_list</.button>
     </.link>
   </:actions>
@@ -14,7 +14,7 @@
   <:item title="Name"><%= @territory_list.name %></:item>
 </.list>
 
-<.back navigate={~p"/territories_list"}>Back to territories_list</.back>
+<.back navigate={~p"/"}>Back to territories list</.back>
 
 <.modal :if={@live_action == :edit} id="territory_list-modal" show on_cancel={JS.patch(~p"/territories_list/#{@territory_list}")}>
   <.live_component
@@ -23,6 +23,6 @@
     title={@page_title}
     action={@live_action}
     territory_list={@territory_list}
-    patch={~p"/territories_list/#{@territory_list}"}
+    patch={~p"/#{@territory_list.category}/#{@territory_list.code}"}
   />
 </.modal>

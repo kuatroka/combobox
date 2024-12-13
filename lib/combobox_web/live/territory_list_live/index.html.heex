@@ -1,7 +1,7 @@
 <.header>
   Listing Territories list
   <:actions>
-    <.link patch={~p"/territories_list/new"}>
+    <.link patch={~p"/new"}>
       <.button>New Territory list</.button>
     </.link>
   </:actions>
@@ -10,16 +10,16 @@
 <.table
   id="territories_list"
   rows={@streams.territories_list}
-  row_click={fn {_id, territory_list} -> JS.navigate(~p"/territories_list/#{territory_list.category}/#{territory_list.code}") end}
+  row_click={fn {_id, territory_list} -> JS.navigate(~p"/#{territory_list.category}/#{territory_list.code}") end}
 >
   <:col :let={{_id, territory_list}} label="Code"><%= territory_list.code %></:col>
   <:col :let={{_id, territory_list}} label="Category"><%= territory_list.category %></:col>
   <:col :let={{_id, territory_list}} label="Name"><%= territory_list.name %></:col>
   <:action :let={{_id, territory_list}}>
     <div class="sr-only">
-      <.link navigate={~p"/territories_list/#{territory_list.category}/#{territory_list.code}"}>Show</.link>
+      <.link navigate={~p"/#{territory_list.category}/#{territory_list.code}"}>Show</.link>
     </div>
-    <.link patch={~p"/territories_list/#{territory_list}/edit"}>Edit</.link>
+    <.link patch={~p"/#{territory_list.category}/#{territory_list.code}/edit"}>Edit</.link>
   </:action>
   <:action :let={{id, territory_list}}>
     <.link
