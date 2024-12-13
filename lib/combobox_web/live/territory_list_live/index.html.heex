@@ -10,14 +10,14 @@
 <.table
   id="territories_list"
   rows={@streams.territories_list}
-  row_click={fn {_id, territory_list} -> JS.navigate(~p"/territories_list/#{territory_list}") end}
+  row_click={fn {_id, territory_list} -> JS.navigate(~p"/territories_list/#{territory_list.category}/#{territory_list.code}") end}
 >
   <:col :let={{_id, territory_list}} label="Code"><%= territory_list.code %></:col>
   <:col :let={{_id, territory_list}} label="Category"><%= territory_list.category %></:col>
   <:col :let={{_id, territory_list}} label="Name"><%= territory_list.name %></:col>
   <:action :let={{_id, territory_list}}>
     <div class="sr-only">
-      <.link navigate={~p"/territories_list/#{territory_list}"}>Show</.link>
+      <.link navigate={~p"/territories_list/#{territory_list.category}/#{territory_list.code}"}>Show</.link>
     </div>
     <.link patch={~p"/territories_list/#{territory_list}/edit"}>Edit</.link>
   </:action>
