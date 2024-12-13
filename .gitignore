@@ -39,7 +39,7 @@ npm-debug.log
 # Database files
 *.db
 *.db-*
-!combobox_dev.db
+# !combobox_dev.db
 
 .aider*
 .env
