@@ -6,15 +6,6 @@ defmodule Combobox.Territory do
 
   alias Combobox.Repo
 
-  schema "territories" do
-    field :territory_id, :integer
-    field :territory, :string
-    field :territory_name, :string
-    field :territory_category, :string
-
-    timestamps(type: :utc_datetime)
-  end
-
 
   alias Combobox.Territory.Country
 
@@ -29,6 +20,7 @@ defmodule Combobox.Territory do
   """
   def list_countries do
     Repo.all(Country)
+
   end
 
   ### using flop
@@ -53,8 +45,8 @@ defmodule Combobox.Territory do
       ** (Ecto.NoResultsError)
 
   """
-  def get_country!(country_id) do
-    Repo.get_by!(Country, country_id: country_id)
+  def get_country!(country_code) do
+    Repo.get_by!(Country, country_code: country_code)
   end
 
   @doc """
@@ -146,7 +138,8 @@ defmodule Combobox.Territory do
 
   """
   def list_cities do
-    Repo.all(City)
+    # Repo.all(City)
+    Repo.all(from c in City, limit: 100)
   end
 
   @doc """
@@ -242,7 +235,8 @@ defmodule Combobox.Territory do
 
   """
   def list_states do
-    Repo.all(State)
+    # Repo.all(State)
+    Repo.all(from c in State, limit: 100)
   end
 
   @doc """
@@ -259,7 +253,9 @@ defmodule Combobox.Territory do
       ** (Ecto.NoResultsError)
 
   """
-  def get_state!(id), do: Repo.get!(State, id)
+  def get_state!(code) when is_binary(code) do
+    Repo.get_by!(State, code: code)
+  end
 
   @doc """
   Creates a state.
@@ -324,5 +320,120 @@ defmodule Combobox.Territory do
   """
   def change_state(%State{} = state, attrs \\ %{}) do
     State.changeset(state, attrs)
+  end
+
+  alias Combobox.Territory.TerritoryList
+
+  @doc """
+  Returns the list of territories_list.
+
+  ## Examples
+
+      iex> list_territories_list()
+      [%TerritoryList{}, ...]
+
+  """
+  def list_territories_list do
+    # Repo.all(from tl in TerritoryList, limit: 20)
+    cities = Repo.all(from c in TerritoryList, where: c.category == "cities", limit: 20)
+    states = Repo.all(from c in TerritoryList, where: c.category == "states", limit: 20)
+    countries = Repo.all(from c in TerritoryList, where: c.category == "countries", limit: 20)
+    cities ++ states ++ countries
+  end
+
+
+@doc """
+  Gets a single territory_list.
+
+  Raises `Ecto.NoResultsError` if the Territory list does not exist.
+
+  ## Examples
+
+      iex> get_territory_list!(123)
+      %TerritoryList{}
+
+      iex> get_territory_list!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_territory_list!(id), do: Repo.get!(TerritoryList, id)
+
+  @doc """
+  Creates a territory_list.
+
+  ## Examples
+
+      iex> create_territory_list(%{field: value})
+      {:ok, %TerritoryList{}}
+
+      iex> create_territory_list(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_territory_list(attrs \\ %{}) do
+    %TerritoryList{}
+    |> TerritoryList.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a territory_list.
+
+  ## Examples
+
+      iex> update_territory_list(territory_list, %{field: new_value})
+      {:ok, %TerritoryList{}}
+
+      iex> update_territory_list(territory_list, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_territory_list(%TerritoryList{} = territory_list, attrs) do
+    territory_list
+    |> TerritoryList.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a territory_list.
+
+  ## Examples
+
+      iex> delete_territory_list(territory_list)
+      {:ok, %TerritoryList{}}
+
+      iex> delete_territory_list(territory_list)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_territory_list(%TerritoryList{} = territory_list) do
+    Repo.delete(territory_list)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking territory_list changes.
+
+  ## Examples
+
+      iex> change_territory_list(territory_list)
+      %Ecto.Changeset{data: %TerritoryList{}}
+
+  """
+  def change_territory_list(%TerritoryList{} = territory_list, attrs \\ %{}) do
+    TerritoryList.changeset(territory_list, attrs)
+  end
+
+
+  @doc """
+  Searchs our territories based on a simple query.
+
+  """
+  def search_territories(q) do
+    from(t in TerritoryList,
+      select: [:title, :url, :rank, :id],
+      where: fragment("territories_list MATCH ?", ^q),
+      order_by: [asc: :rank]
+    )
+    |> Repo.all()
   end
 end

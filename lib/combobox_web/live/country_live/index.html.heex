@@ -36,7 +36,7 @@
   <Flop.Phoenix.table items={@streams.countries} 
   meta={@meta} 
   path={~p"/countries"} 
-  row_click={fn {_id, country} -> JS.navigate(~p"/countries/#{country.country_id}") end}
+  row_click={fn {_id, country} -> JS.navigate(~p"/countries/#{country.country_code}") end}
   opts={ComboboxWeb.FlopComponents.table_opts()}
   >
     <:col :let={{_, country}} label="id" field={:country_id}><%= country.country_id %></:col>
@@ -44,13 +44,13 @@
     <:col :let={{_, country}} label="Name" field={:country_name}><%= country.country_name %></:col>
     <:action :let={{_id, country}} label="Actions">
       <div class="sr-only">
-        <.link navigate={~p"/countries/#{country.country_id}"}>Show</.link>
+        <.link navigate={~p"/countries/#{country.country_code}"}>Show</.link>
       </div>
-      <.link patch={~p"/countries/#{country.country_id}/edit"} class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 focus:outline-none focus:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400 dark:focus:text-blue-400">Edit</.link>
+      <.link patch={~p"/countries/#{country.country_code}/edit"} class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 focus:outline-none focus:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400 dark:focus:text-blue-400">Edit</.link>
     </:action>
     <:action :let={{stream_id, country}} >
       <.link
-        phx-click={JS.push("delete", value: %{country_id: country.country_id}) |> hide("##{stream_id}")}
+        phx-click={JS.push("delete", value: %{country_code: country.country_code}) |> hide("##{stream_id}")}
         data-confirm="Are you sure?"
       class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-red-600 hover:text-red-800 focus:outline-none focus:text-red-800 disabled:opacity-50 disabled:pointer-events-none dark:text-red-500 dark:hover:text-red-400 dark:focus:text-red-400">
         Delete
@@ -73,7 +73,7 @@
 <.table
   id="countries"
   rows={@streams.countries}
-  row_click={fn {_id, country} -> JS.navigate(~p"/countries/#{country.country_id}") end}
+  row_click={fn {_id, country} -> JS.navigate(~p"/countries/#{country.country_code}") end}
 >
   <:col :let={{_id, country}} label="Country id">{country.country_id}</:col>
   <:col :let={{_id, country}} label="Country code">{country.country_code}</:col>
@@ -81,13 +81,13 @@
   <:col :let={{_id, country}} label="Iso3">{country.iso3}</:col>
   <:action :let={{_id, country}}>
     <div class="sr-only">
-      <.link navigate={~p"/countries/#{country.country_id}"}>Show</.link>
+      <.link navigate={~p"/countries/#{country.country_code}"}>Show</.link>
     </div>
-    <.link patch={~p"/countries/#{country.country_id}/edit"}>Edit</.link>
+    <.link patch={~p"/countries/#{country.country_code}/edit"}>Edit</.link>
   </:action>
   <:action :let={{stream_id, country}}>
     <.link
-      phx-click={JS.push("delete", value: %{country_id: country.country_id}) |> hide("##{stream_id}")}
+      phx-click={JS.push("delete", value: %{country_code: country.country_code}) |> hide("##{stream_id}")}
       data-confirm="Are you sure?"
     >
       Delete

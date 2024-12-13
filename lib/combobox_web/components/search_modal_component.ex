@@ -71,7 +71,7 @@ defmodule ComboboxWeb.SearchModalComponent do
               >
                 <%= for {country, index} <- Enum.with_index(@search_results) do %>
                   <li
-                    id={"#{country.country_id}"}
+                    id={"#{country.country_code}"}
                     class={[
                       "block p-4 hover:bg-slate-100",
                       if(@selected_index == index, do: "bg-slate-100 text-sky-800", else: "")
@@ -80,7 +80,7 @@ defmodule ComboboxWeb.SearchModalComponent do
                     aria-selected={@selected_index == index}
                   >
                     <.link
-                      navigate={~p"/countries/#{country.country_id}"}
+                      navigate={~p"/countries/#{country.country_code}"}
                       class="block focus:outline-none"
                       tabindex={if(@selected_index == index, do: "0", else: "-1")}
                     >

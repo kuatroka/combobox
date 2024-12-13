@@ -14,10 +14,10 @@ defmodule ComboboxWeb.StateLive.Index do
     {:noreply, apply_action(socket, socket.assigns.live_action, params)}
   end
 
-  defp apply_action(socket, :edit, %{"id" => id}) do
+  defp apply_action(socket, :edit, %{"code" => code}) do
     socket
     |> assign(:page_title, "Edit State")
-    |> assign(:state, Territory.get_state!(id))
+    |> assign(:state, Territory.get_state!(code))
   end
 
   defp apply_action(socket, :new, _params) do
@@ -38,8 +38,8 @@ defmodule ComboboxWeb.StateLive.Index do
   end
 
   @impl true
-  def handle_event("delete", %{"id" => id}, socket) do
-    state = Territory.get_state!(id)
+  def handle_event("delete", %{"code" => code}, socket) do
+    state = Territory.get_state!(code)
     {:ok, _} = Territory.delete_state(state)
 
     {:noreply, stream_delete(socket, :states, state)}

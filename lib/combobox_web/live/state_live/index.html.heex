@@ -10,9 +10,9 @@
 <.table
   id="states"
   rows={@streams.states}
-  row_click={fn {_id, state} -> JS.navigate(~p"/states/#{state}") end}
+  row_click={fn {_id, state} -> JS.navigate(~p"/states/#{state.code}") end}
 >
-  <:col :let={{_id, state}} label="State"><%= state.state_id %></:col>
+  <:col :let={{_id, state}} label="State"><%= state.code %></:col>
   <:col :let={{_id, state}} label="State name"><%= state.state_name %></:col>
   <:col :let={{_id, state}} label="Country code"><%= state.country_code %></:col>
   <:col :let={{_id, state}} label="Code"><%= state.code %></:col>
@@ -22,9 +22,9 @@
     </div>
     <.link patch={~p"/states/#{state}/edit"}>Edit</.link>
   </:action>
-  <:action :let={{id, state}}>
+  <:action :let={{code, state}}>
     <.link
-      phx-click={JS.push("delete", value: %{id: state.id}) |> hide("##{id}")}
+      phx-click={JS.push("delete", value: %{code: state.code}) |> hide("##{code}")}
       data-confirm="Are you sure?"
     >
       Delete
@@ -35,7 +35,7 @@
 <.modal :if={@live_action in [:new, :edit]} id="state-modal" show on_cancel={JS.patch(~p"/states")}>
   <.live_component
     module={ComboboxWeb.StateLive.FormComponent}
-    id={@state.id || :new}
+    id={@state.code || :new}
     title={@page_title}
     action={@live_action}
     state={@state}

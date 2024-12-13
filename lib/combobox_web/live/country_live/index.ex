@@ -32,10 +32,10 @@ defmodule ComboboxWeb.CountryLive.Index do
     end
   end
 
-  defp apply_action(socket, :edit, %{"country_id" => country_id}) do
+  defp apply_action(socket, :edit, %{"country_code" => country_code}) do
     socket
     |> assign(:page_title, "Edit Country")
-    |> assign(:country, Territory.get_country!(country_id))
+    |> assign(:country, Territory.get_country!(country_code))
   end
 
   defp apply_action(socket, :new, _params) do
@@ -56,8 +56,8 @@ defmodule ComboboxWeb.CountryLive.Index do
   end
 
   @impl true
-  def handle_event("delete", %{"country_id" => country_id}, socket) do
-    country = Territory.get_country!(country_id)
+  def handle_event("delete", %{"country_code" => country_code}, socket) do
+    country = Territory.get_country!(country_code)
     {:ok, _} = Territory.delete_country(country)
 
     {:noreply, stream_delete(socket, :countries, country)}
@@ -89,7 +89,7 @@ defmodule ComboboxWeb.CountryLive.Index do
       "Enter" ->
         if length(socket.assigns.search_results) > 0 do
           selected_country = Enum.at(socket.assigns.search_results, socket.assigns.selected_index)
-          {:noreply, push_navigate(socket, to: ~p"/countries/#{selected_country.country_id}")}
+          {:noreply, push_navigate(socket, to: ~p"/countries/#{selected_country.country_code}")}
         else
           {:noreply, socket}
         end

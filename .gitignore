@@ -9,6 +9,7 @@
 
 # Where 3rd-party dependencies like ExDoc output generated docs.
 /doc/
+/AI/
 
 # Ignore .fetch files in case you like to edit your project deps locally.
 /.fetch
@@ -38,6 +39,7 @@ npm-debug.log
 # Database files
 *.db
 *.db-*
+!combobox_dev.db
 
 .aider*
 .env

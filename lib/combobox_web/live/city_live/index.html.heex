@@ -34,7 +34,12 @@
   </:action>
 </.table>
 
-<.modal :if={@live_action in [:new, :edit]} id="city-modal" show on_cancel={JS.patch(~p"/cities")}>
+<.modal 
+  :if={@live_action in [:new, :edit]} 
+  id="city-modal" 
+  show 
+  on_cancel={JS.patch(~p"/cities")}
+>
   <.live_component
     module={ComboboxWeb.CityLive.FormComponent}
     id={@city.id || :new}

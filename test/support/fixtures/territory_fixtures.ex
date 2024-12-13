@@ -71,4 +71,20 @@ defmodule Combobox.TerritoryFixtures do
 
     state
   end
+
+  @doc """
+  Generate a territory_list.
+  """
+  def territory_list_fixture(attrs \\ %{}) do
+    {:ok, territory_list} =
+      attrs
+      |> Enum.into(%{
+        category: "some category",
+        code: "some code",
+        name: "some name"
+      })
+      |> Combobox.Territory.create_territory_list()
+
+    territory_list
+  end
 end

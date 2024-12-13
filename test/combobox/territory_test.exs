@@ -186,4 +186,62 @@ defmodule Combobox.TerritoryTest do
       assert %Ecto.Changeset{} = Territory.change_state(state)
     end
   end
+
+  describe "territories_list" do
+    alias Combobox.Territory.TerritoryList
+
+    import Combobox.TerritoryFixtures
+
+    @invalid_attrs %{code: nil, name: nil, category: nil}
+
+    test "list_territories_list/0 returns all territories_list" do
+      territory_list = territory_list_fixture()
+      assert Territory.list_territories_list() == [territory_list]
+    end
+
+    test "get_territory_list!/1 returns the territory_list with given id" do
+      territory_list = territory_list_fixture()
+      assert Territory.get_territory_list!(territory_list.id) == territory_list
+    end
+
+    test "create_territory_list/1 with valid data creates a territory_list" do
+      valid_attrs = %{code: "some code", name: "some name", category: "some category"}
+
+      assert {:ok, %TerritoryList{} = territory_list} = Territory.create_territory_list(valid_attrs)
+      assert territory_list.code == "some code"
+      assert territory_list.name == "some name"
+      assert territory_list.category == "some category"
+    end
+
+    test "create_territory_list/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Territory.create_territory_list(@invalid_attrs)
+    end
+
+    test "update_territory_list/2 with valid data updates the territory_list" do
+      territory_list = territory_list_fixture()
+      update_attrs = %{code: "some updated code", name: "some updated name", category: "some updated category"}
+
+      assert {:ok, %TerritoryList{} = territory_list} = Territory.update_territory_list(territory_list, update_attrs)
+      assert territory_list.code == "some updated code"
+      assert territory_list.name == "some updated name"
+      assert territory_list.category == "some updated category"
+    end
+
+    test "update_territory_list/2 with invalid data returns error changeset" do
+      territory_list = territory_list_fixture()
+      assert {:error, %Ecto.Changeset{}} = Territory.update_territory_list(territory_list, @invalid_attrs)
+      assert territory_list == Territory.get_territory_list!(territory_list.id)
+    end
+
+    test "delete_territory_list/1 deletes the territory_list" do
+      territory_list = territory_list_fixture()
+      assert {:ok, %TerritoryList{}} = Territory.delete_territory_list(territory_list)
+      assert_raise Ecto.NoResultsError, fn -> Territory.get_territory_list!(territory_list.id) end
+    end
+
+    test "change_territory_list/1 returns a territory_list changeset" do
+      territory_list = territory_list_fixture()
+      assert %Ecto.Changeset{} = Territory.change_territory_list(territory_list)
+    end
+  end
 end

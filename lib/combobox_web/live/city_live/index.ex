@@ -6,7 +6,23 @@ defmodule ComboboxWeb.CityLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, stream(socket, :cities, Territory.list_cities())}
+    if connected?(socket) do
+      {:ok, 
+        socket
+        |> stream(:cities, Territory.list_cities())
+        |> attach_hook(:handle_back, :handle_params, fn
+          _params, url, socket when socket.assigns.live_action in [:new, :edit] ->
+            path = URI.parse(url).path
+            case path do
+              "/cities" -> {:halt, push_patch(socket, to: ~p"/cities")}
+              _ -> {:cont, socket}
+            end
+          _params, _url, socket ->
+            {:cont, socket}
+        end)}
+    else
+      {:ok, stream(socket, :cities, Territory.list_cities())}
+    end
   end
 
   @impl true
@@ -44,4 +60,10 @@ defmodule ComboboxWeb.CityLive.Index do
 
     {:noreply, stream_delete(socket, :cities, city)}
   end
+
+  @impl true
+  def handle_event("modal-close", _, socket) do
+    {:noreply, push_navigate(socket, to: ~p"/cities")}
+  end
+
 end

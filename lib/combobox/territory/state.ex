@@ -16,6 +16,6 @@ defmodule Combobox.Territory.State do
     state
     |> cast(attrs, [:state_id, :state_name, :country_code, :code])
     |> validate_required([:state_id, :state_name, :country_code, :code])
-    |> unique_constraint(:state_id)
+    |> unique_constraint(:code)
   end
 end

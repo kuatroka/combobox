@@ -17,13 +17,13 @@
   <:col :let={{_id, territory_list}} label="Name"><%= territory_list.name %></:col>
   <:action :let={{_id, territory_list}}>
     <div class="sr-only">
-      <.link navigate={~p"/#{territory_list.category}/#{territory_list.code}"}>Show</.link>
+      <.link navigate={~p"/#{String.trim(territory_list.category)}/#{territory_list.code}"}>Show</.link>
     </div>
-    <.link patch={~p"/#{territory_list.category}/#{territory_list.code}/edit"}>Edit</.link>
+    <.link patch={~p"/#{String.trim(territory_list.category)}/#{territory_list.code}/edit"}>Edit</.link>
   </:action>
   <:action :let={{id, territory_list}}>
     <.link
-      phx-click={JS.push("delete", value: %{id: territory_list.id}) |> hide("##{id}")}
+      phx-click={JS.push("delete", value: %{code: territory_list.code}) |> hide("##{territory_list.code}")}
       data-confirm="Are you sure?"
     >
       Delete
@@ -34,7 +34,7 @@
 <.modal :if={@live_action in [:new, :edit]} id="territory_list-modal" show on_cancel={JS.patch(~p"/territories_list")}>
   <.live_component
     module={ComboboxWeb.TerritoryListLive.FormComponent}
-    id={@territory_list.id || :new}
+    id={@territory_list.code || :new}
     title={@page_title}
     action={@live_action}
     territory_list={@territory_list}
