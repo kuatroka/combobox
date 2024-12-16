@@ -18,9 +18,9 @@
   <:col :let={{_id, state}} label="Code"><%= state.code %></:col>
   <:action :let={{_id, state}}>
     <div class="sr-only">
-      <.link navigate={~p"/states/#{state}"}>Show</.link>
+      <.link navigate={~p"/states/#{state.code}"}>Show</.link>
     </div>
-    <.link patch={~p"/states/#{state}/edit"}>Edit</.link>
+    <.link patch={~p"/states/#{state.code}/edit"}>Edit</.link>
   </:action>
   <:action :let={{code, state}}>
     <.link
