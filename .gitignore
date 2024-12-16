@@ -8,7 +8,6 @@
 /deps/
 
 # Where 3rd-party dependencies like ExDoc output generated docs.
-/doc/
 /AI/
 
 # Ignore .fetch files in case you like to edit your project deps locally.
@@ -28,7 +27,6 @@ combobox-*.tar
 
 # Ignore assets that are produced by build tools.
 /priv/static/assets/
-
 # Ignore digested assets cache.
 /priv/static/cache_manifest.json
 
@@ -39,7 +37,7 @@ npm-debug.log
 # Database files
 *.db
 *.db-*
-combobox_dev.db
+!combobox_dev.db
 
 .aider*
 .env
