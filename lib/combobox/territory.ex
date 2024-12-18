@@ -429,10 +429,14 @@ defmodule Combobox.Territory do
 
   """
   def search_territories(q) do
+    # Add wildcards to make the search more flexible
+    query = "#{q}*"
+
     from(t in TerritoryList,
-      select: [:title, :url, :rank, :id],
-      where: fragment("territories_list MATCH ?", ^q),
-      order_by: [asc: :rank]
+      select: [:name, :code, :category],
+      where: fragment("territories_list MATCH ?", ^query),
+      order_by: [asc: :name],
+      limit: 10
     )
     |> Repo.all()
   end
