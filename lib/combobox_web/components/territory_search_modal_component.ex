@@ -73,19 +73,21 @@ defmodule ComboboxWeb.TerritorySearchModalComponent do
                   <li
                     id={"#{territory.code}"}
                     class={[
-                      "block p-4 hover:bg-slate-100",
+                      "block hover:bg-slate-100",
                       if(@selected_index == index, do: "bg-slate-100 text-sky-800", else: "")
                     ]}
                     role="option"
                     aria-selected={@selected_index == index}
                   >
-                    <.link
-                      navigate={~p"/#{territory.category}/#{territory.code}"}
-                      class="block focus:outline-none"
+                    <a
+                      href={~p"/#{territory.category}/#{territory.code}"}
+                      class="block p-4 focus:outline-none"
                       tabindex={if(@selected_index == index, do: "0", else: "-1")}
+                      data-phx-link="redirect"
+                      data-phx-link-state="push"
                     >
-                      <%= territory.name %> (<%= String.capitalize(territory.category) %>)
-                    </.link>
+                      { territory.name } ({String.capitalize(territory.category)})
+                    </a>
                   </li>
                 <% end %>
               </ul>

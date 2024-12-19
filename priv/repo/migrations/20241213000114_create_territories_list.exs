@@ -9,7 +9,7 @@ defmodule Combobox.Repo.Migrations.CreateTerritoriesList do
       category UNINDEXED,
       updated_at UNINDEXED,
       inserted_at UNINDEXED,
-      tokenize='porter unicode61'
+      tokenize='unicode61 remove_diacritics 2'
     );
     """
   end

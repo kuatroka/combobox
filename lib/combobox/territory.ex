@@ -428,14 +428,24 @@ defmodule Combobox.Territory do
   Searchs our territories based on a simple query.
 
   """
-  def search_territories(q) do
-    # Add wildcards to make the search more flexible
-    query = "#{q}*"
+  def search_territories(q) when is_binary(q) and byte_size(q) > 0 do
+    # Add wildcards for partial matching if the query doesn't end with *
+    search_term = if String.ends_with?(q, "*"), do: q, else: "#{q}*"
 
     from(t in TerritoryList,
-      select: [:name, :code, :category],
-      where: fragment("territories_list MATCH ?", ^query),
-      order_by: [asc: :name],
+      select: %{
+        name: t.name,
+        code: t.code,
+        category: t.category,
+        # Calculate relevance score using bm25
+        relevance: fragment("bm25(territories_list)")
+      },
+      where: fragment("territories_list MATCH ?", ^search_term),
+      # Order first by relevance score, then by name for items with same relevance
+      order_by: [
+        asc: fragment("bm25(territories_list)"),
+        asc: :name
+      ],
       limit: 10
     )
     |> Repo.all()

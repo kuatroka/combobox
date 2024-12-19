@@ -34,21 +34,43 @@ defmodule ComboboxWeb.TerritoryListLive.Index do
 
   def handle_event("change", %{"search" => %{"query" => query}}, socket) when byte_size(query) > 0 do
     search_results = Territory.search_territories(query)
-    {:noreply, assign(socket, :search_results, search_results)}
+    {:noreply,
+     socket
+     |> assign(:search_results, search_results)
+     |> assign(:selected_index, 0)}
   end
 
   def handle_event("change", _params, socket) do
-    {:noreply, assign(socket, :search_results, [])}
+    {:noreply,
+     socket
+     |> assign(:search_results, [])
+     |> assign(:selected_index, 0)}
   end
 
   def handle_event("handle_key", %{"key" => "ArrowDown"}, socket) do
     new_index = min(socket.assigns.selected_index + 1, length(socket.assigns.search_results) - 1)
-    {:noreply, assign(socket, :selected_index, new_index)}
+
+    if selected_territory = Enum.at(socket.assigns.search_results, new_index) do
+      {:noreply,
+       socket
+       |> assign(:selected_index, new_index)
+       |> push_event("update_selected", %{id: selected_territory.code})}
+    else
+      {:noreply, assign(socket, :selected_index, new_index)}
+    end
   end
 
   def handle_event("handle_key", %{"key" => "ArrowUp"}, socket) do
     new_index = max(socket.assigns.selected_index - 1, 0)
-    {:noreply, assign(socket, :selected_index, new_index)}
+
+    if selected_territory = Enum.at(socket.assigns.search_results, new_index) do
+      {:noreply,
+       socket
+       |> assign(:selected_index, new_index)
+       |> push_event("update_selected", %{id: selected_territory.code})}
+    else
+      {:noreply, assign(socket, :selected_index, new_index)}
+    end
   end
 
   def handle_event("handle_key", %{"key" => "Enter"}, socket) do
@@ -74,5 +96,13 @@ defmodule ComboboxWeb.TerritoryListLive.Index do
   def close_search_modal do
     JS.hide(to: "#territory-searchbar-dialog")
     |> JS.hide(to: "#territory_searchbox_container")
+    |> JS.push("close_modal")
+  end
+
+  def handle_event("close_modal", _params, socket) do
+    {:noreply,
+     socket
+     |> assign(:search_results, [])
+     |> assign(:selected_index, 0)}
   end
 end

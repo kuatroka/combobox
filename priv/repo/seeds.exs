@@ -34,23 +34,37 @@ end
 
 case File.read(csv_path) do
   {:ok, file} ->
-    file
-    |> String.split("\n")
-    |> Enum.drop(1)  # Skip header row
-    |> Enum.filter(&(String.length(&1) > 0))  # Skip empty lines
-    |> Enum.each(fn line ->
-      case CSVParser.parse_line(line) do
-        [id, territory, territory_name, territory_category] ->  # Match the CSV structure
-          # For FTS tables, we use direct INSERT
-          Ecto.Adapters.SQL.query!(
-            Repo,
-            "INSERT INTO territories_list (code, name, category, updated_at, inserted_at) VALUES (?, ?, ?, ?, ?)",
-            [territory, territory_name, territory_category, current_time, current_time]
-          )
-        other ->
-          IO.puts("Skipping malformed row (#{length(other)} fields): #{line}")
-      end
+    # First, parse all lines and create a unique set based on territory_name and category
+    unique_territories =
+      file
+      |> String.split("\n")
+      |> Enum.drop(1)  # Skip header row
+      |> Enum.filter(&(String.length(&1) > 0))  # Skip empty lines
+      |> Enum.reduce(%{}, fn line, acc ->
+        case CSVParser.parse_line(line) do
+          [_id, territory, territory_name, territory_category] ->
+            key = {territory_name, territory_category}
+            if Map.has_key?(acc, key) do
+              acc  # Skip duplicate
+            else
+              Map.put(acc, key, {territory, territory_name, territory_category})
+            end
+          _other -> acc
+        end
+      end)
+
+    # Now insert the unique entries
+    unique_territories
+    |> Map.values()
+    |> Enum.each(fn {territory, territory_name, territory_category} ->
+      Ecto.Adapters.SQL.query!(
+        Repo,
+        "INSERT INTO territories_list (code, name, category, updated_at, inserted_at) VALUES (?, ?, ?, ?, ?)",
+        [territory, territory_name, territory_category, current_time, current_time]
+      )
     end)
+
+    IO.puts("Inserted #{map_size(unique_territories)} unique territories (removed #{length(String.split(file, "\n")) - map_size(unique_territories) - 1} duplicates)")
 
   {:error, reason} ->
     IO.puts("Error reading CSV file: #{reason}")
