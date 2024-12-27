@@ -1,7 +1,8 @@
+ <%# the modal and the browser's back button works here: %>
 <.header>
   Listing Cities
   <:actions>
-    <.link patch={~p"/cities/new"}>
+    <.link patch={~p"/cities/new"} replace={true}>
       <.button>New City</.button>
     </.link>
   </:actions>
@@ -22,7 +23,7 @@
     <div class="sr-only">
       <.link navigate={~p"/cities/#{city}"}>Show</.link>
     </div>
-    <.link patch={~p"/cities/#{city}/edit"}>Edit</.link>
+    <.link patch={~p"/cities/#{city}/edit"} replace={true} >Edit</.link>
   </:action>
   <:action :let={{id, city}}>
     <.link
@@ -38,7 +39,7 @@
   :if={@live_action in [:new, :edit]} 
   id="city-modal" 
   show 
-  on_cancel={JS.patch(~p"/cities")}
+  on_cancel={JS.patch(~p"/cities", replace: true)}
 >
   <.live_component
     module={ComboboxWeb.CityLive.FormComponent}

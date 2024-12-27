@@ -2,7 +2,7 @@
   City <%= @city.id %>
   <:subtitle>This is a city record from your database.</:subtitle>
   <:actions>
-    <.link patch={~p"/cities/#{@city}/show/edit"} phx-click={JS.push_focus()}>
+    <.link patch={~p"/cities/#{@city}/show/edit"} replace={true} phx-click={JS.push_focus()} >
       <.button>Edit city</.button>
     </.link>
   </:actions>
@@ -19,7 +19,7 @@
 
 <.back navigate={~p"/cities"}>Back to cities</.back>
 
-<.modal :if={@live_action == :edit} id="city-modal" show on_cancel={JS.patch(~p"/cities/#{@city}")}>
+<.modal :if={@live_action == :edit} id="city-modal" show on_cancel={JS.patch(~p"/cities/#{@city}", replace: true)}>
   <.live_component
     module={ComboboxWeb.CityLive.FormComponent}
     id={@city.id}
@@ -27,5 +27,6 @@
     action={@live_action}
     city={@city}
     patch={~p"/cities/#{@city}"}
+    on_cancel={JS.patch(~p"/cities/#{@city}", replace: true)}
   />
 </.modal>
