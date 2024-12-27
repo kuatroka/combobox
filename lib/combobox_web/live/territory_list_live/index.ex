@@ -112,7 +112,15 @@ defmodule ComboboxWeb.TerritoryListLive.Index do
   end
 
 
-  def render(%{live_action: :index} = assigns) do
+  def render(assigns) do
+    case assigns[:live_action] do
+      :index -> render_index(assigns)
+      :global_search -> render_global_search(assigns)
+      _ -> render_global_search(assigns)
+    end
+  end
+
+  defp render_index(assigns) do
     ~H"""
     <%# ## Search modal button - centered %>
     <div class="flex justify-center my-8">
@@ -139,7 +147,7 @@ defmodule ComboboxWeb.TerritoryListLive.Index do
     """
   end
 
-  def render(%{live_action: :global_search} = assigns) do
+  defp render_global_search(assigns) do
     ~H"""
     <button
       type="button"
