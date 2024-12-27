@@ -4,6 +4,7 @@ defmodule ComboboxWeb.Components.TerritorySearchModalComponent do
   attr :search_results, :list, default: []
   attr :close_modal, :any, default: nil
   attr :selected_index, :integer, default: 0
+  attr :show_modal, :any, default: nil
 
   def territory_search_modal(assigns) do
     ~H"""
