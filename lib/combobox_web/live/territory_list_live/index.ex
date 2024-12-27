@@ -95,19 +95,19 @@ defmodule ComboboxWeb.TerritoryListLive.Index do
 
   def show_search_modal do
     JS.show(
-      to: "#global-search-territory-searchbar-dialog",
+      to: "##{@id}-territory-searchbar-dialog",
       transition: {"ease-out duration-300", "opacity-0", "opacity-100"}
     )
     |> JS.show(
-      to: "#global-search-territory_searchbox_container", 
+      to: "##{@id}-territory_searchbox_container", 
       transition: {"ease-out duration-300", "opacity-0 scale-95", "opacity-100 scale-100"}
     )
-    |> JS.focus(to: "#global-search-territory-search-input")
+    |> JS.focus(to: "##{@id}-territory-search-input")
   end
 
   def close_search_modal do
-    JS.hide(to: "#global-search-territory-searchbar-dialog")
-    |> JS.hide(to: "#global-search-territory_searchbox_container")
+    JS.hide(to: "##{@id}-territory-searchbar-dialog")
+    |> JS.hide(to: "##{@id}-territory_searchbox_container")
     |> JS.push("close_modal")
   end
 
@@ -151,6 +151,7 @@ defmodule ComboboxWeb.TerritoryListLive.Index do
       close_modal={close_search_modal()} 
       selected_index={@selected_index}
       show_modal={show_search_modal()}
+      id={@id}
     />
     """
   end

@@ -5,11 +5,12 @@ defmodule ComboboxWeb.Components.TerritorySearchModalComponent do
   attr :close_modal, :any, default: nil
   attr :selected_index, :integer, default: 0
   attr :show_modal, :any, default: nil
+  attr :id, :string, default: "global-search"
 
   def territory_search_modal(assigns) do
     ~H"""
     <div
-      id="territory-searchbar-dialog"
+      id={"#{@id}-territory-searchbar-dialog"}
       class="hidden fixed inset-0 z-50"
       role="dialog"
       aria-modal="true"
@@ -17,7 +18,7 @@ defmodule ComboboxWeb.Components.TerritorySearchModalComponent do
       <div class="fixed inset-0 bg-zinc-400/25 backdrop-blur-sm opacity-100"></div>
       <div class="fixed inset-0 overflow-y-auto px-4 py-4 sm:py-20 sm:px-6 md:py-32 lg:px-8 lg:py-[15vh]">
         <div
-          id="territory_searchbox_container"
+          id={"#{@id}-territory_searchbox_container"}
           class="hidden mx-auto overflow-hidden rounded-lg bg-zinc-50 shadow-xl ring-zinc-900/7.5 sm:max-w-xl"
           phx-hook="SearchBar"
         >
@@ -44,7 +45,7 @@ defmodule ComboboxWeb.Components.TerritorySearchModalComponent do
                 </svg>
 
                 <input
-                  id="territory-search-input"
+                  id={"#{@id}-territory-search-input"}
                   name="search[query]"
                   class="flex-auto rounded-lg appearance-none bg-transparent pl-10 text-zinc-900 outline-none focus:outline-none border-slate-200 focus:border-slate-200 focus:ring-0 focus:shadow-none placeholder:text-zinc-500 focus:w-full focus:flex-none sm:text-sm [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden [&::-webkit-search-results-button]:hidden [&::-webkit-search-results-decoration]:hidden pr-4"
                   style={if length(@search_results) > 0, do: "border-bottom-left-radius: 0; border-bottom-right-radius: 0; border-bottom: none"}
