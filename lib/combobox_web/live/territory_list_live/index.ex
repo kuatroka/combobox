@@ -5,16 +5,15 @@ defmodule ComboboxWeb.TerritoryListLive.Index do
   import ComboboxWeb.TerritorySearchModalComponent
 
   @impl true
-  def mount(_params, _session, socket) do
-    {:ok,
-     socket
-     |> assign(:search_results, [])
-     |> assign(:selected_index, 0)}
-  end
+  def mount(params, _session, socket) do
+    live_action = socket.assigns[:live_action] || :index
+    socket = 
+      socket
+      |> assign(:search_results, [])
+      |> assign(:selected_index, 0)
+      |> apply_action(live_action, params)
 
-  @impl true
-  def handle_params(params, _url, socket) do
-    {:noreply, apply_action(socket, socket.assigns.live_action, params)}
+    {:ok, socket}
   end
 
 
