@@ -92,6 +92,7 @@ defmodule ComboboxWeb.TerritoryListLive.Index do
     {:noreply, socket}
   end
 
+
   def show_search_modal do
     JS.show(
       to: "#global-search-territory-searchbar-dialog",
