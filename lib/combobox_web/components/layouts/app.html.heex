@@ -21,6 +21,14 @@
 
 
 
+        <%= live_render(@conn, ComboboxWeb.TerritoryListLive.Index,
+          id: "global-search",
+          session: %{},
+          router: ComboboxWeb.Router,
+          action: :global_search,
+          container: {:div, class: "flex items-center"}
+        ) %>
+
         <button
           data-collapse-toggle="mobile-menu-2"
           type="button"
