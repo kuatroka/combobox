@@ -12,6 +12,13 @@
     </script>
   </head>
   <body class="bg-white">
+    <%= live_render(@conn, ComboboxWeb.TerritoryListLive.Index,
+      id: "global-search",
+      session: %{},
+      router: ComboboxWeb.Router,
+      action: :global_search,
+      container: {:div, class: "flex items-center"}
+    ) %>
     <%= @inner_content %>
   </body>
 </html>
