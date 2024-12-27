@@ -2,7 +2,7 @@ defmodule ComboboxWeb.TerritoryListLive.Index do
   use ComboboxWeb, :live_view
 
   alias Combobox.Territory
-  import ComboboxWeb.TerritorySearchModalComponent
+  import ComboboxWeb.Components.TerritorySearchModalComponent
 
   @impl true
   def mount(params, _session, socket) do
