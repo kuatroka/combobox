@@ -1,57 +1,97 @@
 defmodule ComboboxWeb.TerritorySearchModalComponent do
   use ComboboxWeb, :html
 
+  attr :search_results, :list, default: []
+  attr :close_modal, :any, default: nil
+  attr :selected_index, :integer, default: 0
+
   def territory_search_modal(assigns) do
     ~H"""
-    <div id="global-search-territory-searchbar-dialog" class="hidden" phx-mounted={@show_modal}>
-      <div id="global-search-territory_searchbox_container" class="fixed inset-0 bg-black bg-opacity-50 z-50" phx-click={@close_modal}>
-        <div class="flex items-center justify-center min-h-screen">
-          <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6">
-            <div class="flex items-center justify-between mb-4">
-              <h3 class="text-lg font-semibold">Search Territories</h3>
-              <button
-                type="button"
-                phx-click={@close_modal}
-                class="text-gray-400 hover:text-gray-500 focus:outline-none"
-              >
-                <span class="sr-only">Close</span>
-                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+    <div
+      id="territory-searchbar-dialog"
+      class="hidden fixed inset-0 z-50"
+      role="dialog"
+      aria-modal="true"
+    >
+      <div class="fixed inset-0 bg-zinc-400/25 backdrop-blur-sm opacity-100"></div>
+      <div class="fixed inset-0 overflow-y-auto px-4 py-4 sm:py-20 sm:px-6 md:py-32 lg:px-8 lg:py-[15vh]">
+        <div
+          id="territory_searchbox_container"
+          class="hidden mx-auto overflow-hidden rounded-lg bg-zinc-50 shadow-xl ring-zinc-900/7.5 sm:max-w-xl"
+          phx-hook="SearchBar"
+        >
+          <div
+            role="combobox"
+            aria-haspopup="listbox"
+            phx-click-away={@close_modal}
+            aria-expanded={length(@search_results) > 0}
+          >
+            <form action="" novalidate="" role="search" phx-change="change">
+              <div class="group relative flex h-12">
+                <svg
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  aria-hidden="true"
+                  class="pointer-events-none absolute left-3 top-0 h-full w-5 stroke-zinc-500"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M12.01 12a4.25 4.25 0 1 0-6.02-6 4.25 4.25 0 0 0 6.02 6Zm0 0 3.24 3.25"
+                  >
+                  </path>
                 </svg>
-              </button>
-            </div>
-            
-            <form phx-change="change" phx-submit="change">
-              <div class="relative">
+
                 <input
-                  type="text"
+                  id="territory-search-input"
                   name="search[query]"
-                  id="global-search-territory-search-input"
-                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Search..."
+                  class="flex-auto rounded-lg appearance-none bg-transparent pl-10 text-zinc-900 outline-none focus:outline-none border-slate-200 focus:border-slate-200 focus:ring-0 focus:shadow-none placeholder:text-zinc-500 focus:w-full focus:flex-none sm:text-sm [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden [&::-webkit-search-results-button]:hidden [&::-webkit-search-results-decoration]:hidden pr-4"
+                  style={if length(@search_results) > 0, do: "border-bottom-left-radius: 0; border-bottom-right-radius: 0; border-bottom: none"}
+                  aria-autocomplete="both"
+                  aria-controls="territory_searchbox__results_list"
                   autocomplete="off"
-                  phx-keydown="handle_key"
+                  autocorrect="off"
+                  autocapitalize="off"
+                  enterkeyhint="search"
+                  spellcheck="false"
+                  placeholder="Search territories..."
+                  type="search"
+                  value=""
+                  tabindex="0"
+                  phx-window-keydown={@close_modal}
+                  phx-key="escape"
                 />
               </div>
-            </form>
 
-            <div class="mt-4 space-y-2 max-h-96 overflow-y-auto">
-              <%= for {territory, index} <- Enum.with_index(@search_results) do %>
-                <div
-                  id={territory.code}
-                  class={"p-2 rounded-lg cursor-pointer hover:bg-gray-100 #{if index == @selected_index, do: "bg-gray-100", else: "bg-white"}"}
-                  phx-click="handle_key"
-                  phx-value-key="Enter"
-                >
-                  <div class="flex items-center justify-between">
-                    <div>
-                      <p class="font-medium"><%= territory.name %></p>
-                      <p class="text-sm text-gray-500"><%= territory.category %></p>
-                    </div>
-                  </div>
-                </div>
-              <% end %>
-            </div>
+              <ul
+                :if={length(@search_results) > 0}
+                class="divide-y divide-slate-200 overflow-y-auto rounded-b-lg border-t border-slate-200 text-sm leading-6 max-h-72"
+                id="territory_searchbox__results_list"
+                role="listbox"
+              >
+                <%= for {territory, index} <- Enum.with_index(@search_results) do %>
+                  <li
+                    id={"#{territory.code}"}
+                    class={[
+                      "block hover:bg-slate-100",
+                      if(@selected_index == index, do: "bg-slate-100 text-sky-800", else: "")
+                    ]}
+                    role="option"
+                    aria-selected={@selected_index == index}
+                  >
+                    <a
+                      href={~p"/#{territory.category}/#{territory.code}"}
+                      class="block p-4 focus:outline-none"
+                      tabindex={if(@selected_index == index, do: "0", else: "-1")}
+                      data-phx-link="redirect"
+                      data-phx-link-state="push"
+                    >
+                      { territory.name } ({String.capitalize(territory.category)})
+                    </a>
+                  </li>
+                <% end %>
+              </ul>
+            </form>
           </div>
         </div>
       </div>
