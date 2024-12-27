@@ -19,7 +19,7 @@ defmodule ComboboxWeb.Router do
 
     live "/global-search", TerritoryListLive.Index, :global_search
     
-    get "/", PageController, :home
+    live "/", PageLive.Home, :index
 
     live "/countries", CountryLive.Index, :index
     live "/countries/new", CountryLive.Index, :new
