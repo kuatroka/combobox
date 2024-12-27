@@ -25,6 +25,12 @@ defmodule ComboboxWeb.TerritoryListLive.Index do
     |> assign(:territory_list, nil)
   end
 
+  defp apply_action(socket, :global_search, _params) do
+    socket
+    |> assign(:page_title, "Search Territories")
+    |> assign(:territory_list, nil)
+  end
+
   @impl true
   def handle_info({ComboboxWeb.TerritoryListLive.FormComponent, {:saved, territory_list}}, socket) do
     {:noreply, stream_insert(socket, :territories_list, territory_list)}
@@ -88,14 +94,14 @@ defmodule ComboboxWeb.TerritoryListLive.Index do
   end
 
   def show_search_modal do
-    JS.show(to: "#territory-searchbar-dialog")
-    |> JS.show(to: "#territory_searchbox_container")
-    |> JS.focus(to: "#territory-search-input")
+    JS.show(to: "#global-search-territory-searchbar-dialog")
+    |> JS.show(to: "#global-search-territory_searchbox_container")
+    |> JS.focus(to: "#global-search-territory-search-input")
   end
 
   def close_search_modal do
-    JS.hide(to: "#territory-searchbar-dialog")
-    |> JS.hide(to: "#territory_searchbox_container")
+    JS.hide(to: "#global-search-territory-searchbar-dialog")
+    |> JS.hide(to: "#global-search-territory_searchbox_container")
     |> JS.push("close_modal")
   end
 
