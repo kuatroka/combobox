@@ -1,4 +1,4 @@
-defmodule ComboboxWeb.TerritorySearchModalComponent do
+defmodule ComboboxWeb.Components.TerritorySearchModalComponent do
   use ComboboxWeb, :html
 
   attr :search_results, :list, default: []
