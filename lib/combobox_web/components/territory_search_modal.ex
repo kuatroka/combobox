@@ -3,8 +3,8 @@ defmodule ComboboxWeb.TerritorySearchModalComponent do
 
   def territory_search_modal(assigns) do
     ~H"""
-    <div id="global-search-territory-searchbar-dialog" class="hidden">
-      <div id="global-search-territory_searchbox_container" class="fixed inset-0 bg-black bg-opacity-50 z-50">
+    <div id="global-search-territory-searchbar-dialog" class="hidden" phx-mounted={@show_modal}>
+      <div id="global-search-territory_searchbox_container" class="fixed inset-0 bg-black bg-opacity-50 z-50" phx-click={@close_modal}>
         <div class="flex items-center justify-center min-h-screen">
           <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6">
             <div class="flex items-center justify-between mb-4">

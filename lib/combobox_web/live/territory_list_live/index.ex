@@ -93,8 +93,14 @@ defmodule ComboboxWeb.TerritoryListLive.Index do
   end
 
   def show_search_modal do
-    JS.show(to: "#global-search-territory-searchbar-dialog")
-    |> JS.show(to: "#global-search-territory_searchbox_container")
+    JS.show(
+      to: "#global-search-territory-searchbar-dialog",
+      transition: {"ease-out duration-300", "opacity-0", "opacity-100"}
+    )
+    |> JS.show(
+      to: "#global-search-territory_searchbox_container", 
+      transition: {"ease-out duration-300", "opacity-0 scale-95", "opacity-100 scale-100"}
+    )
     |> JS.focus(to: "#global-search-territory-search-input")
   end
 
@@ -143,6 +149,7 @@ defmodule ComboboxWeb.TerritoryListLive.Index do
       search_results={@search_results} 
       close_modal={close_search_modal()} 
       selected_index={@selected_index}
+      show_modal={show_search_modal()}
     />
     """
   end
