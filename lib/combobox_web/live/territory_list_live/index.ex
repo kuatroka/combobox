@@ -11,6 +11,7 @@ defmodule ComboboxWeb.TerritoryListLive.Index do
       socket
       |> assign(:search_results, [])
       |> assign(:selected_index, 0)
+      |> assign(:id, socket.id)
       |> apply_action(live_action, params)
 
     {:ok, socket}
@@ -173,6 +174,8 @@ defmodule ComboboxWeb.TerritoryListLive.Index do
       search_results={@search_results} 
       close_modal={close_search_modal()} 
       selected_index={@selected_index}
+      show_modal={show_search_modal()}
+      id={@id}
     />
     """
   end
