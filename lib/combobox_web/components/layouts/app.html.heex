@@ -21,13 +21,15 @@
 
 
 
-        <%= live_render(@socket, ComboboxWeb.TerritoryListLive.Index,
-          id: "global-search",
-          session: %{},
-          router: ComboboxWeb.Router,
-          action: :global_search,
-          container: {:div, class: "flex items-center"}
-        ) %>
+        <%= if assigns[:socket] do %>
+          <%= live_render(@socket, ComboboxWeb.TerritoryListLive.Index,
+            id: "global-search",
+            session: %{},
+            router: ComboboxWeb.Router,
+            action: :global_search,
+            container: {:div, class: "flex items-center"}
+          ) %>
+        <% end %>
 
         <button
           data-collapse-toggle="mobile-menu-2"
