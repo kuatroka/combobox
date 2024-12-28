@@ -16,12 +16,16 @@ defmodule ComboboxWeb.Layouts do
 
   def render("app.html", assigns) do
     assigns = assign_uri(assigns)
-    render_template("app.html", assigns)
+    ~H"""
+    <%= render("layouts/app.html", assigns) %>
+    """
   end
 
   def render("root.html", assigns) do
     assigns = assign_uri(assigns)
-    render_template("root.html", assigns)
+    ~H"""
+    <%= render("layouts/root.html", assigns) %>
+    """
   end
 
   embed_templates "layouts/*"
