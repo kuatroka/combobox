@@ -10,6 +10,24 @@ const MenuHighlight = {
       this.highlightCurrentPath();
     });
 
+    // Handle resize events
+    this.handleResize = () => {
+      const menu = document.getElementById('mobile-menu-2');
+      if (menu) {
+        if (window.innerWidth >= 1024) { // lg breakpoint
+          menu.classList.remove('hidden');
+          menu.style.display = ''; // Remove inline style if any
+        } else {
+          menu.classList.add('hidden');
+        }
+      }
+    };
+
+    window.addEventListener('resize', this.handleResize);
+    
+    // Initial check
+    this.handleResize();
+
     this.handleClick = (e) => {
       const clickedItem = e.target.closest('.menu-item');
       if (clickedItem) {
@@ -45,6 +63,7 @@ const MenuHighlight = {
 
   destroyed() {
     this.el.removeEventListener('click', this.handleClick);
+    window.removeEventListener('resize', this.handleResize);
   }
 };
 
