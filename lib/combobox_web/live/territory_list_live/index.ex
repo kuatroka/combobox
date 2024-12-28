@@ -7,7 +7,7 @@ defmodule ComboboxWeb.TerritoryListLive.Index do
   @impl true
   def mount(params, _session, socket) do
     live_action = socket.assigns[:live_action] || :index
-    socket = 
+    socket =
       socket
       |> assign(:search_results, [])
       |> assign(:selected_index, 0)
@@ -100,7 +100,7 @@ defmodule ComboboxWeb.TerritoryListLive.Index do
       transition: {"ease-out duration-300", "opacity-0", "opacity-100"}
     )
     |> JS.show(
-      to: "##{id}-territory_searchbox_container", 
+      to: "##{id}-territory_searchbox_container",
       transition: {"ease-out duration-300", "opacity-0 scale-95", "opacity-100 scale-100"}
     )
     |> JS.focus(to: "##{id}-territory-search-input")
@@ -147,9 +147,9 @@ defmodule ComboboxWeb.TerritoryListLive.Index do
     </div>
 
     <%# ## Search modal %>
-    <.territory_search_modal 
-      search_results={@search_results} 
-      close_modal={close_search_modal(@id)} 
+    <.territory_search_modal
+      search_results={@search_results}
+      close_modal={close_search_modal(@id)}
       selected_index={@selected_index}
       show_modal={show_search_modal(@id)}
       id={@id}
@@ -162,17 +162,17 @@ defmodule ComboboxWeb.TerritoryListLive.Index do
     <button
       type="button"
       phx-click={show_search_modal()}
-      class="text-sm font-medium text-gray-900 rounded-lg px-4 lg:px-5 py-2 lg:py-2.5 ring-1 ring-gray-200 hover:bg-gray-50 focus:outline-none focus:ring-4 focus:ring-gray-100 bg-white gap-2"
+      class="text-sm font-medium text-gray-900 rounded-lg px-4 lg:px-5 py-2 lg:py-2.5 ring-1 ring-gray-200 hover:bg-gray-50 focus:outline-none focus:ring-4 focus:ring-gray-100 bg-white gap-2 flex items-center"
     >
+      <span>Cities, States, Countries...</span>
       <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
       </svg>
-      <span>Search...</span>
     </button>
 
-    <.territory_search_modal 
-      search_results={@search_results} 
-      close_modal={close_search_modal(@id)} 
+    <.territory_search_modal
+      search_results={@search_results}
+      close_modal={close_search_modal(@id)}
       selected_index={@selected_index}
       show_modal={show_search_modal(@id)}
       id={@id}

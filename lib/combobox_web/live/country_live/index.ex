@@ -2,7 +2,7 @@ defmodule ComboboxWeb.CountryLive.Index do
   use ComboboxWeb, :live_view
 
   import ComboboxWeb.FlopComponents
-  import ComboboxWeb.SearchModalComponent
+  import ComboboxWeb.Components.SearchModalComponent
 
   alias Phoenix.LiveView.JS
   alias Combobox.Territory
