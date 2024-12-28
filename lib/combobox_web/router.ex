@@ -17,38 +17,38 @@ defmodule ComboboxWeb.Router do
   scope "/", ComboboxWeb do
     pipe_through :browser
 
-    live "/global-search", TerritoryListLive.Index, :global_search
+    live_session :default, on_mount: ComboboxWeb.Live.Hooks.UrlTracker do
+      live "/global-search", TerritoryListLive.Index, :global_search
 
-    live "/", PageLive.Home, :index
+      live "/", PageLive.Home, :index
 
-    live "/countries", CountryLive.Index, :index
-    live "/countries/new", CountryLive.Index, :new
-    live "/countries/:country_code/edit", CountryLive.Index, :edit
+      live "/countries", CountryLive.Index, :index
+      live "/countries/new", CountryLive.Index, :new
+      live "/countries/:country_code/edit", CountryLive.Index, :edit
 
-    live "/countries/:country_code", CountryLive.Show, :show
-    live "/countries/:country_code/show/edit", CountryLive.Show, :edit
+      live "/countries/:country_code", CountryLive.Show, :show
+      live "/countries/:country_code/show/edit", CountryLive.Show, :edit
 
-    #######
-    live "/cities", CityLive.Index, :index
-    live "/cities/new", CityLive.Index, :new
-    live "/cities/:id/edit", CityLive.Index, :edit
-    live "/cities/:id", CityLive.Show, :show
-    live "/cities/:id/show/edit", CityLive.Show, :edit
+      #######
+      live "/cities", CityLive.Index, :index
+      live "/cities/new", CityLive.Index, :new
+      live "/cities/:id/edit", CityLive.Index, :edit
+      live "/cities/:id", CityLive.Show, :show
+      live "/cities/:id/show/edit", CityLive.Show, :edit
 
-    live "/states", StateLive.Index, :index
-    live "/states/new", StateLive.Index, :new
-    live "/states/:code/edit", StateLive.Index, :edit
-    live "/states/:code", StateLive.Show, :show
-    live "/states/:code/show/edit", StateLive.Show, :edit
+      live "/states", StateLive.Index, :index
+      live "/states/new", StateLive.Index, :new
+      live "/states/:code/edit", StateLive.Index, :edit
+      live "/states/:code", StateLive.Show, :show
+      live "/states/:code/show/edit", StateLive.Show, :edit
 
-    live "/territories_list", TerritoryListLive.Index, :index
-    live "/territories_list/new", TerritoryListLive.Index, :new
-    live "/territories_list/:code/edit", TerritoryListLive.Index, :edit
+      live "/territories_list", TerritoryListLive.Index, :index
+      live "/territories_list/new", TerritoryListLive.Index, :new
+      live "/territories_list/:code/edit", TerritoryListLive.Index, :edit
 
-    live "/territories_list/:code", TerritoryListLive.Show, :show
-    live "/territories_list/:code/show/edit", TerritoryListLive.Show, :edit
-
-
+      live "/territories_list/:code", TerritoryListLive.Show, :show
+      live "/territories_list/:code/show/edit", TerritoryListLive.Show, :edit
+    end
   end
 
   # Other scopes may use custom stacks.

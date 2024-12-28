@@ -1,5 +1,9 @@
 <header>
 
+  <div class="flex items-center bg-gray-100 px-4 py-2 text-sm text-gray-600">
+    Current path: <%= @current_path %>
+  </div>
+
   <nav class="bg-ant border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800">
     <div class="flex flex-wrap items-center justify-between max-w-screen-xl mx-auto">
       <div class="flex items-center space-x-4">
@@ -29,13 +33,9 @@
         <button
           type="button"
           class="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+          phx-click={JS.toggle(to: "#mobile-menu-2")}
           aria-controls="mobile-menu-2"
           aria-expanded="false"
-          phx-click={JS.toggle(
-            to: "#mobile-menu-2",
-            in: {"transition-all ease-out duration-300", "opacity-0 scale-95", "opacity-100 scale-100"},
-            out: {"transition-all ease-in duration-200", "opacity-100 scale-100", "opacity-0 scale-95"}
-          )}
         >
           <span class="sr-only">Open main menu</span>
           <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -49,25 +49,20 @@
         >
           Log in
         </a>
-
-
       </div>
-      <div
-        class="items-center justify-between hidden w-full lg:flex lg:w-auto lg:order-1"
-        id="mobile-menu-2"
-        phx-hook="MobileMenu"
-      >
-        <ul id="menu-list" 
-            class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0" 
-            phx-hook="MenuHighlight">
 
+      <div
+        class="items-center justify-between w-full lg:flex lg:w-auto lg:order-1 hidden lg:block"
+        id="mobile-menu-2"
+        phx-update="ignore"
+      >
+        <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
           <li>
             <a
               href="/countries"
               data-phx-link="redirect"
               data-phx-link-state="push"
-              class="block py-2 pl-3 pr-4 menu-item text-gray-700 hover:text-blue-700"
-              data-menu-item="countries"
+              class={"block py-2 pl-3 pr-4 #{if String.starts_with?(@current_path, "/countries"), do: "text-blue-700 font-bold", else: "text-gray-700 hover:text-blue-700"}"}
             >
               Countries
             </a>
@@ -78,8 +73,7 @@
               href="/states"
               data-phx-link="redirect"
               data-phx-link-state="push"
-              class="block py-2 pl-3 pr-4 menu-item text-gray-700 hover:text-blue-700"
-              data-menu-item="states"
+              class={"block py-2 pl-3 pr-4 #{if String.starts_with?(@current_path, "/states"), do: "text-blue-700 font-bold", else: "text-gray-700 hover:text-blue-700"}"}
             >
               States
             </a>
@@ -90,8 +84,7 @@
               href="/cities"
               data-phx-link="redirect"
               data-phx-link-state="push"
-              class="block py-2 pl-3 pr-4 menu-item text-gray-700 hover:text-blue-700"
-              data-menu-item="cities"
+              class={"block py-2 pl-3 pr-4 #{if String.starts_with?(@current_path, "/cities"), do: "text-blue-700 font-bold", else: "text-gray-700 hover:text-blue-700"}"}
             >
               Cities
             </a>
@@ -102,8 +95,7 @@
               href="/territories_list"
               data-phx-link="redirect"
               data-phx-link-state="push"
-              class="block py-2 pl-3 pr-4 menu-item text-gray-700 hover:text-blue-700"
-              data-menu-item="territories"
+              class={"block py-2 pl-3 pr-4 #{if String.starts_with?(@current_path, "/territories_list"), do: "text-blue-700 font-bold", else: "text-gray-700 hover:text-blue-700"}"}
             >
               Territories
             </a>
