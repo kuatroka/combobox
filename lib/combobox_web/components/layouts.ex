@@ -11,7 +11,8 @@ defmodule ComboboxWeb.Layouts do
   use ComboboxWeb, :html
 
   defp assign_uri(socket) do
-    assign(socket, :uri, Phoenix.LiveView.current_uri(socket))
+    uri = socket.assigns[:uri] || "/"
+    assign(socket, :uri, uri)
   end
 
   def render("app.html", assigns) do
