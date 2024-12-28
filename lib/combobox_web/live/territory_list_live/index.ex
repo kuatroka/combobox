@@ -2,28 +2,42 @@ defmodule ComboboxWeb.TerritoryListLive.Index do
   use ComboboxWeb, :live_view
 
   alias Combobox.Territory
-  import ComboboxWeb.TerritorySearchModalComponent
+  import ComboboxWeb.Components.TerritorySearchModalComponent
 
   @impl true
-  def mount(_params, _session, socket) do
-    {:ok,
-     socket
-     |> assign(:search_results, [])
-     |> assign(:selected_index, 0)}
+  def mount(params, _session, socket) do
+    live_action = socket.assigns[:live_action] || :index
+    socket =
+      socket
+      |> assign(:search_results, [])
+      |> assign(:selected_index, 0)
+      |> assign(:id, socket.id)
+      |> apply_action(live_action, params)
+
+    {:ok, socket}
   end
 
+
   # @impl true
-  # def handle_params(params, _url, socket) do
-  #   {:noreply, apply_action(socket, socket.assigns.live_action, params)}
+  # def handle_params(params, url, socket) when socket.assigns.live_action == :index do
+  #   current_path = URI.parse(url).path
+  #   {:noreply, assign(socket, :current_path, current_path)}
   # end
 
 
 
-  # defp apply_action(socket, :index, _params) do
-  #   socket
-  #   |> assign(:page_title, "Listing Territories list")
-  #   |> assign(:territory_list, nil)
-  # end
+
+  defp apply_action(socket, :index, _params) do
+    socket
+    |> assign(:page_title, "Listing Territories list")
+    |> assign(:territory_list, nil)
+  end
+
+  defp apply_action(socket, :global_search, _params) do
+    socket
+    |> assign(:page_title, "Search Territories")
+    |> assign(:territory_list, nil)
+  end
 
   @impl true
   def handle_info({ComboboxWeb.TerritoryListLive.FormComponent, {:saved, territory_list}}, socket) do
@@ -101,17 +115,84 @@ defmodule ComboboxWeb.TerritoryListLive.Index do
   end
 
 
-  def show_search_modal do
-    JS.show(to: "#territory-searchbar-dialog")
-    |> JS.show(to: "#territory_searchbox_container")
-    |> JS.focus(to: "#territory-search-input")
+  def show_search_modal(id \\ "global-search") do
+    JS.show(
+      to: "##{id}-territory-searchbar-dialog",
+      transition: {"ease-out duration-300", "opacity-0", "opacity-100"}
+    )
+    |> JS.show(
+      to: "##{id}-territory_searchbox_container",
+      transition: {"ease-out duration-300", "opacity-0 scale-95", "opacity-100 scale-100"}
+    )
+    |> JS.focus(to: "##{id}-territory-search-input")
   end
 
-  def close_search_modal do
-    JS.hide(to: "#territory-searchbar-dialog")
-    |> JS.hide(to: "#territory_searchbox_container")
+  def close_search_modal(id \\ "global-search") do
+    JS.hide(to: "##{id}-territory-searchbar-dialog")
+    |> JS.hide(to: "##{id}-territory_searchbox_container")
     |> JS.push("close_modal")
   end
 
 
+
+  @impl true
+  def render(assigns) do
+    case assigns[:live_action] do
+      :index -> render_index(assigns)
+      :global_search -> render_global_search(assigns)
+      _ -> render_global_search(assigns)
+    end
+  end
+
+  defp render_index(assigns) do
+    ~H"""
+    <%# ## Search modal button - centered %>
+    <div class="flex justify-center my-8">
+      <div class="w-96">
+        <button
+          type="button"
+          phx-click={show_search_modal()}
+          class="w-full flex items-center justify-center text-sm font-medium text-gray-900 rounded-lg px-4 lg:px-5 py-2 lg:py-2.5 ring-1 ring-gray-200 hover:bg-gray-50 focus:outline-none focus:ring-4 focus:ring-gray-100 bg-white gap-2"
+        >
+          <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+          </svg>
+          <span>Search Territories...</span>
+        </button>
+      </div>
+    </div>
+
+    <%# ## Search modal %>
+    <.territory_search_modal
+      search_results={@search_results}
+      close_modal={close_search_modal(@id)}
+      selected_index={@selected_index}
+      show_modal={show_search_modal(@id)}
+      id={@id}
+    />
+    """
+  end
+
+  defp render_global_search(assigns) do
+    ~H"""
+    <button
+      type="button"
+      phx-click={show_search_modal()}
+      class="text-sm font-medium text-gray-900 rounded-lg px-4 lg:px-5 py-2 lg:py-2.5 ring-1 ring-gray-200 hover:bg-gray-50 focus:outline-none focus:ring-4 focus:ring-gray-100 bg-white gap-2 flex items-center"
+    >
+      <span>Cities, States, Countries...</span>
+      <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+      </svg>
+    </button>
+
+    <.territory_search_modal
+      search_results={@search_results}
+      close_modal={close_search_modal(@id)}
+      selected_index={@selected_index}
+      show_modal={show_search_modal(@id)}
+      id={@id}
+    />
+    """
+  end
 end

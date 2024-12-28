@@ -17,7 +17,9 @@ defmodule ComboboxWeb.Router do
   scope "/", ComboboxWeb do
     pipe_through :browser
 
-    get "/", PageController, :home
+    live "/global-search", TerritoryListLive.Index, :global_search
+
+    live "/", PageLive.Home, :index
 
     live "/countries", CountryLive.Index, :index
     live "/countries/new", CountryLive.Index, :new

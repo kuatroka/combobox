@@ -9,10 +9,12 @@ defmodule ComboboxWeb.StateLive.Show do
   end
 
   @impl true
-  def handle_params(%{"code" => code}, _, socket) do
+  def handle_params(%{"code" => code}, url, socket) do
+    current_path = URI.parse(url).path
     {:noreply,
      socket
      |> assign(:page_title, page_title(socket.assigns.live_action))
+     |> assign(:current_path, current_path)
      |> assign(:state, Territory.get_state!(code))}
   end
 

@@ -1,4 +1,4 @@
-defmodule ComboboxWeb.SearchModalComponent do
+defmodule ComboboxWeb.Components.SearchModalComponent do
   use ComboboxWeb, :html
 
   attr :search_results, :list, default: []

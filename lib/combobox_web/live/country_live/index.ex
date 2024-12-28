@@ -2,7 +2,7 @@ defmodule ComboboxWeb.CountryLive.Index do
   use ComboboxWeb, :live_view
 
   import ComboboxWeb.FlopComponents
-  import ComboboxWeb.SearchModalComponent
+  import ComboboxWeb.Components.SearchModalComponent
 
   alias Phoenix.LiveView.JS
   alias Combobox.Territory
@@ -18,10 +18,12 @@ defmodule ComboboxWeb.CountryLive.Index do
   end
 
   @impl Phoenix.LiveView
-  def handle_params(params, _, socket) do
+  def handle_params(params, url, socket) do
+    current_path = URI.parse(url).path
     case Territory.list_countries2(params) do
       {:ok, {countries, meta}} ->
         socket = socket
+          |> assign(:current_path, current_path)
           |> assign(:meta, meta)
           |> stream(:countries, countries, reset: true)
 

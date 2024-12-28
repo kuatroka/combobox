@@ -7,7 +7,7 @@ defmodule ComboboxWeb.CityLive.Index do
   @impl true
   def mount(_params, _session, socket) do
     if connected?(socket) do
-      {:ok, 
+      {:ok,
         socket
         |> stream(:cities, Territory.list_cities())
         |> attach_hook(:handle_back, :handle_params, fn
@@ -26,8 +26,9 @@ defmodule ComboboxWeb.CityLive.Index do
   end
 
   @impl true
-  def handle_params(params, _url, socket) do
-    {:noreply, apply_action(socket, socket.assigns.live_action, params)}
+  def handle_params(params, url, socket) do
+    current_path = URI.parse(url).path
+    {:noreply, socket |> assign(:current_path, current_path) |> apply_action(socket.assigns.live_action, params)}
   end
 
   defp apply_action(socket, :edit, %{"id" => id}) do
