@@ -10,6 +10,23 @@ defmodule ComboboxWeb.Layouts do
   """
   use ComboboxWeb, :html
 
+  def nav_link(assigns) do
+    ~H"""
+    <a
+      href={@href}
+      class={[
+        "block py-2 pl-3 pr-4 rounded lg:p-0",
+        if(@active,
+          do: "text-white bg-blue-700 lg:bg-transparent lg:text-blue-700 dark:text-white",
+          else: "text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-blue-700 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"
+        )
+      ]}
+    >
+      <%= render_slot(@inner_block) %>
+    </a>
+    """
+  end
+
 
 
   embed_templates "layouts/*"
