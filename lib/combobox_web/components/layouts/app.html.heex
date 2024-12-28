@@ -59,7 +59,7 @@
           <li>
             <.nav_link 
               href="/" 
-              active={@current_url == "/"}
+              active={Phoenix.LiveView.current_path(@socket) == "/"}
             >
               Home
             </.nav_link>
@@ -68,7 +68,7 @@
           <li>
             <.nav_link 
               href="/countries" 
-              active={@current_url == "/countries"}
+              active={Phoenix.LiveView.current_path(@socket) == "/countries"}
             >
               Countries
             </.nav_link>
@@ -76,7 +76,7 @@
           <li>
             <.nav_link 
               href="/states" 
-              active={@current_url == "/states"}
+              active={Phoenix.LiveView.current_path(@socket) == "/states"}
             >
               States
             </.nav_link>
@@ -84,7 +84,7 @@
           <li>
             <.nav_link 
               href="/cities" 
-              active={@current_url == "/cities"}
+              active={Phoenix.LiveView.current_path(@socket) == "/cities"}
             >
               Cities
             </.nav_link>
@@ -92,7 +92,7 @@
           <li>
             <.nav_link 
               href="/territories_list" 
-              active={@current_url == "/territories_list"}
+              active={Phoenix.LiveView.current_path(@socket) == "/territories_list"}
             >
               Territories
             </.nav_link>
