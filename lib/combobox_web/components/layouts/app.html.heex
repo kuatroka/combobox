@@ -7,17 +7,20 @@
           class="h-6 mr-3 sm:h-9"
           alt="Flowbite Logo"
         />
-
       </a>
-        <%= if assigns[:socket] do %>
-          { live_render(@socket, ComboboxWeb.TerritoryListLive.Index,
-            id: "global-search",
-            session: %{},
-            router: ComboboxWeb.Router,
-            action: :global_search,
-            container: {:div, class: ""}
-          ) }
-        <% end %>
+
+        <div class="ml-[-1.5rem]">
+          <%= if assigns[:socket] do %>
+            { live_render(@socket, ComboboxWeb.TerritoryListLive.Index,
+              id: "global-search",
+              session: %{},
+              router: ComboboxWeb.Router,
+              action: :global_search,
+              container: {:div, class: ""}
+            ) }
+          <% end %>
+        </div>
+
       <div class="flex items-center lg:order-2">
         <!-- Mobile menu button -->
         <button
