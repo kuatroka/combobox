@@ -10,24 +10,7 @@ defmodule ComboboxWeb.Layouts do
   """
   use ComboboxWeb, :html
 
-  defp assign_uri(socket) do
-    uri = socket.assigns[:uri] || "/"
-    assign(socket, :uri, uri)
-  end
 
-  def render("app.html", assigns) do
-    assigns = assign_uri(assigns)
-    ~H"""
-    <%= render("layouts/app.html", assigns) %>
-    """
-  end
-
-  def render("root.html", assigns) do
-    assigns = assign_uri(assigns)
-    ~H"""
-    <%= render("layouts/root.html", assigns) %>
-    """
-  end
 
   embed_templates "layouts/*"
 end
