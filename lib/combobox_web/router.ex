@@ -10,6 +10,12 @@ defmodule ComboboxWeb.Router do
     plug :put_secure_browser_headers
   end
 
+  def live_session_on_mount do
+    quote do
+      on_mount ComboboxWeb.Plugs.CurrentUrlPlug
+    end
+  end
+
   pipeline :api do
     plug :accepts, ["json"]
   end
@@ -17,7 +23,8 @@ defmodule ComboboxWeb.Router do
   scope "/", ComboboxWeb do
     pipe_through :browser
 
-    live "/global-search", TerritoryListLive.Index, :global_search
+    live_session :default, on_mount: [{ComboboxWeb.Plugs.CurrentUrlPlug, :default}] do
+      live "/global-search", TerritoryListLive.Index, :global_search
     
     live "/", PageLive.Home, :index
 
