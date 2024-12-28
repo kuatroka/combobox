@@ -10,5 +10,19 @@ defmodule ComboboxWeb.Layouts do
   """
   use ComboboxWeb, :html
 
+  defp assign_uri(socket) do
+    assign(socket, :uri, Phoenix.LiveView.current_uri(socket))
+  end
+
+  def render("app.html", assigns) do
+    assigns = assign_uri(assigns)
+    render_template("app.html", assigns)
+  end
+
+  def render("root.html", assigns) do
+    assigns = assign_uri(assigns)
+    render_template("root.html", assigns)
+  end
+
   embed_templates "layouts/*"
 end
