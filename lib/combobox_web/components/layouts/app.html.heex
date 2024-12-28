@@ -1,5 +1,5 @@
 <header>
-  <% current_path = Phoenix.LiveView.Utils.live_link_info!(@socket).path %>
+
   <nav class="bg-ant border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800">
     <div class="flex flex-wrap items-center justify-between max-w-screen-xl mx-auto">
       <div class="flex items-center space-x-4">
@@ -47,56 +47,62 @@
         </a>
 
 
-
-
-
       </div>
       <div
         class="items-center justify-between hidden w-full lg:flex lg:w-auto lg:order-1"
         id="mobile-menu-2"
         phx-hook="MobileMenu"
       >
-        <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
+        <ul id="menu-list" 
+            class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0" 
+            phx-hook="MenuHighlight">
+
           <li>
-            <.nav_link 
-              href="/" 
-              active={Phoenix.LiveView.Utils.live_link_info!(@socket).path == "/"}
+            <a
+              href="/countries"
+              data-phx-link="redirect"
+              data-phx-link-state="push"
+              class="block py-2 pl-3 pr-4 menu-item text-gray-700 hover:text-blue-700"
+              data-menu-item="countries"
             >
-              Home
-            </.nav_link>
+              Countries
+            </a>
           </li>
 
           <li>
-            <.nav_link 
-              href="/countries" 
-              active={Phoenix.LiveView.Utils.live_link_info!(@socket).path == "/countries"}
-            >
-              Countries
-            </.nav_link>
-          </li>
-          <li>
-            <.nav_link 
-              href="/states" 
-              active={Phoenix.LiveView.Utils.live_link_info!(@socket).path == "/states"}
+            <a
+              href="/states"
+              data-phx-link="redirect"
+              data-phx-link-state="push"
+              class="block py-2 pl-3 pr-4 menu-item text-gray-700 hover:text-blue-700"
+              data-menu-item="states"
             >
               States
-            </.nav_link>
+            </a>
           </li>
+
           <li>
-            <.nav_link 
-              href="/cities" 
-              active={Phoenix.LiveView.Utils.live_link_info!(@socket).path == "/cities"}
+            <a
+              href="/cities"
+              data-phx-link="redirect"
+              data-phx-link-state="push"
+              class="block py-2 pl-3 pr-4 menu-item text-gray-700 hover:text-blue-700"
+              data-menu-item="cities"
             >
               Cities
-            </.nav_link>
+            </a>
           </li>
+
           <li>
-            <.nav_link 
-              href="/territories_list" 
-              active={Phoenix.LiveView.Utils.live_link_info!(@socket).path == "/territories_list"}
+            <a
+              href="/territories_list"
+              data-phx-link="redirect"
+              data-phx-link-state="push"
+              class="block py-2 pl-3 pr-4 menu-item text-gray-700 hover:text-blue-700"
+              data-menu-item="territories"
             >
               Territories
-            </.nav_link>
+            </a>
           </li>
         </ul>
       </div>
