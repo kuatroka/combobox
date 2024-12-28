@@ -9,11 +9,13 @@ defmodule ComboboxWeb.CountryLive.Show do
   end
 
   @impl true
-  def handle_params(%{"country_code" => country_code}, _, socket) do
+  def handle_params(%{"country_code" => country_code}, url, socket) do
+    current_path = URI.parse(url).path
     {:noreply,
      socket
      |> assign(:page_title, page_title(socket.assigns.live_action))
-     |> assign(:country, Territory.get_country!(country_code))}
+     |> assign(:country, Territory.get_country!(country_code))
+     |> assign(:current_path, current_path)}
   end
 
   defp page_title(:show), do: "Show Country"

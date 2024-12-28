@@ -18,6 +18,14 @@ defmodule ComboboxWeb.TerritoryListLive.Index do
   end
 
 
+  # @impl true
+  # def handle_params(params, url, socket) when socket.assigns.live_action == :index do
+  #   current_path = URI.parse(url).path
+  #   {:noreply, assign(socket, :current_path, current_path)}
+  # end
+
+
+
 
   defp apply_action(socket, :index, _params) do
     socket
@@ -37,7 +45,7 @@ defmodule ComboboxWeb.TerritoryListLive.Index do
   end
 
 
-
+  @impl true
   def handle_event("change", %{"search" => %{"query" => query}}, socket) when byte_size(query) > 0 do
     search_results = Territory.search_territories(query)
     {:noreply,
@@ -46,6 +54,7 @@ defmodule ComboboxWeb.TerritoryListLive.Index do
      |> assign(:selected_index, 0)}
   end
 
+  @impl true
   def handle_event("change", _params, socket) do
     {:noreply,
      socket
@@ -53,6 +62,7 @@ defmodule ComboboxWeb.TerritoryListLive.Index do
      |> assign(:selected_index, 0)}
   end
 
+  @impl true
   def handle_event("handle_key", %{"key" => "ArrowDown"}, socket) do
     new_index = min(socket.assigns.selected_index + 1, length(socket.assigns.search_results) - 1)
 
@@ -66,6 +76,7 @@ defmodule ComboboxWeb.TerritoryListLive.Index do
     end
   end
 
+  @impl true
   def handle_event("handle_key", %{"key" => "ArrowUp"}, socket) do
     new_index = max(socket.assigns.selected_index - 1, 0)
 
@@ -79,6 +90,7 @@ defmodule ComboboxWeb.TerritoryListLive.Index do
     end
   end
 
+  @impl true
   def handle_event("handle_key", %{"key" => "Enter"}, socket) do
     if selected_territory = Enum.at(socket.assigns.search_results, socket.assigns.selected_index) do
       {:noreply,
@@ -89,8 +101,17 @@ defmodule ComboboxWeb.TerritoryListLive.Index do
     end
   end
 
+  @impl true
   def handle_event("handle_key", _key, socket) do
     {:noreply, socket}
+  end
+
+  @impl true
+  def handle_event("close_modal", _params, socket) do
+    {:noreply,
+     socket
+     |> assign(:search_results, [])
+     |> assign(:selected_index, 0)}
   end
 
 
@@ -112,14 +133,9 @@ defmodule ComboboxWeb.TerritoryListLive.Index do
     |> JS.push("close_modal")
   end
 
-  def handle_event("close_modal", _params, socket) do
-    {:noreply,
-     socket
-     |> assign(:search_results, [])
-     |> assign(:selected_index, 0)}
-  end
 
 
+  @impl true
   def render(assigns) do
     case assigns[:live_action] do
       :index -> render_index(assigns)
