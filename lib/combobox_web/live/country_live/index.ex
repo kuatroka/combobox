@@ -99,14 +99,26 @@ defmodule ComboboxWeb.CountryLive.Index do
     end
   end
 
-  def handle_event("change", %{"search" => %{"query" => ""}}, socket) do
-    {:noreply, socket |> assign(:search_results, []) |> assign(:selected_index, 0)}
-  end
+  # def handle_event("change", %{"search" => %{"query" => ""}}, socket) do
+  #   {:noreply, socket |> assign(:search_results, []) |> assign(:selected_index, 0)}
+  # end
 
   def handle_event("change", %{"search" => %{"query" => query}}, socket) do
     countries = Territory.search_countries(query)
     {:noreply, socket |> assign(:search_results, countries) |> assign(:selected_index, 0)}
   end
+
+
+  def handle_event("update-filter", params, socket) do
+    case Territory.list_countries2(params) do
+      {:ok, {_items, meta}} ->
+        socket = push_patch(socket, to: ~p"/countries?#{Flop.Phoenix.to_query(meta.flop)}")
+        {:noreply, socket}
+      {:error, meta} ->
+        {:noreply, assign(socket, meta: meta)}
+    end
+  end
+
 
   def show_search_modal(js \\ %JS{}) do
     js

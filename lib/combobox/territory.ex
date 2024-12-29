@@ -25,8 +25,27 @@ defmodule Combobox.Territory do
 
   ### using flop
   def list_countries2(params) do
-    # Flop.validate_and_run(Country, params, for: Country, default_limit: 10)
-    Flop.validate_and_run(Country, params, for: Country, default_limit: 5)
+    # Convert search parameter to a query condition
+    base_query = from c in Country
+
+    query = case get_in(params, ["filters", "0", "value"]) do
+      value when is_binary(value) and value != "" ->
+        pattern = "%#{value}%"
+        from c in base_query,
+          where: fragment("? COLLATE NOCASE LIKE ? OR ? COLLATE NOCASE LIKE ?",
+            c.country_name, ^pattern,
+            c.country_code, ^pattern)
+      _ ->
+        base_query
+    end
+
+    Flop.validate_and_run(
+      query,
+      params,
+      for: Country,
+      default_limit: 5,
+      default_order: [asc: :country_name]
+    )
   end
 
 

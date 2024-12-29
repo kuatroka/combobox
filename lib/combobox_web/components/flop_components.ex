@@ -1,6 +1,7 @@
 defmodule ComboboxWeb.FlopComponents do
   use Phoenix.Component
   import ComboboxWeb.CoreComponents
+  import Flop.Phoenix
 
   #### flop phoenix components
 
@@ -82,6 +83,38 @@ defmodule ComboboxWeb.FlopComponents do
         target={@target}
       />
     </nav>
+    """
+  end
+
+
+
+  attr :fields, :list, required: true
+  attr :meta, Flop.Meta, required: true
+  attr :id, :string, default: nil
+  attr :on_change, :string, default: "update-filter"
+  attr :target, :string, default: nil
+  slot :inner_block, required: false
+
+  def filter_form(%{meta: meta} = assigns) do
+    assigns = assign(assigns, form: Phoenix.Component.to_form(meta), meta: nil)
+
+    ~H"""
+    <.form
+      for={@form}
+      id={@id}
+      phx-target={@target}
+      phx-change={@on_change}
+      phx-submit={@on_change}
+    >
+      <.filter_fields :let={i} form={@form} fields={@fields}>
+        <.input
+          field={i.field}
+          type={i.type}
+          phx-debounce={120}
+          {i.rest}
+        />
+      </.filter_fields>
+    </.form>
     """
   end
 

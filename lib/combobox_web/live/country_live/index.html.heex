@@ -28,7 +28,16 @@
       <.button>New Country</.button>
     </.link>
   </:actions>
+
+  <.filter_form
+    fields={[country_name: [op: :like, type: "search", phx_debounce: "150", placeholder: "Search Country, Code..."]]}
+    meta={@meta}
+    id="country-filter-form"
+  />
+
 </.header>
+
+
 
 <%!-- <.icon name="hero-arrow-down-circle" class="w-6 h-6" />  # need to compile for it to work --%>
 
